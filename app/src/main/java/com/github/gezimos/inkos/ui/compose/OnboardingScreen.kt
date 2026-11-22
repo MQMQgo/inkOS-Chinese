@@ -220,7 +220,7 @@ object OnboardingScreen {
                                 // Mono toggle
                                 val monoActive = einkMode
                                 Text(
-                                    text = "Mono",
+                                    text = stringResource(R.string.theme_mono),
                                     style = SettingsTheme.typography.title,
                                     fontSize = titleFontSize,
                                     color = if (monoActive) bgColor else textColor,
@@ -264,7 +264,7 @@ object OnboardingScreen {
                                 ) {
                                     Icon(
                                         imageVector = modeIcon,
-                                        contentDescription = themeMode.name,
+                                        contentDescription = themeMode.string(),
                                         tint = textColor,
                                         modifier = Modifier.size(20.dp.scaled(screenScale))
                                     )
@@ -340,13 +340,13 @@ object OnboardingScreen {
                         Spacer(modifier = Modifier.height(24.dp.scaled(screenScale)))
                         Text(
                             text = when (page) {
-                                0 -> "A distraction-free interface for clarity and focus. Optimized for e-ink devices, QWERTY and T9 phones."
-                                1 -> "inkOS does not collect, store, or share any data. There are no server connections and no tracking. Everything stays on your device."
-                                2 -> "To get the most out of inkOS, grant notification permissions so inkOS can forward you Android notifications in Home, Letters or Simple Tray."
-                                3 -> "To make inkOS your new app home, set it as a default launcher. You can change this later in Settings."
-                                4 -> "To access settings, Pinch (zoom out) in home (empty areas) to open the quick settings. That will allow you to access All Settings or enable Edit Mode for the front-end editor."
-                                5 -> "Choose a color preset for your launcher, or skip to keep your current theme and start from scratch."
-                                6 -> "Select your home shortcuts and order them using Edit Favorites. You can still longpress on single apps in home to replace them individually like before."
+                                0 -> stringResource(R.string.onboarding_welcome_body)
+                                1 -> stringResource(R.string.onboarding_privacy_body)
+                                2 -> stringResource(R.string.onboarding_notifications_body)
+                                3 -> stringResource(R.string.onboarding_launcher_body)
+                                4 -> stringResource(R.string.onboarding_settings_body)
+                                5 -> stringResource(R.string.onboarding_theme_body)
+                                6 -> stringResource(R.string.onboarding_home_apps_body)
                                 else -> ""
                             },
                             style = SettingsTheme.typography.body,
@@ -413,7 +413,7 @@ object OnboardingScreen {
                                     )
                                 }
                                 Text(
-                                    text = "I CONFIRM THAT I'VE READ",
+                                    text = stringResource(R.string.onboarding_confirm_settings),
                                     style = SettingsTheme.typography.title,
                                     fontSize = (titleFontSize.value * 0.7f).sp,
                                     fontWeight = FontWeight.Bold,
@@ -739,7 +739,7 @@ object OnboardingScreen {
                                     if (!privacyToastShown) {
                                         android.widget.Toast.makeText(
                                             context,
-                                            "In order to continue you'll need to agree to the privacy policy",
+                                            context.getString(R.string.onboarding_privacy_required),
                                             android.widget.Toast.LENGTH_LONG
                                         ).show()
                                         privacyToastShown = true
@@ -750,7 +750,7 @@ object OnboardingScreen {
                                     if (!settingsToastShown) {
                                         android.widget.Toast.makeText(
                                             context,
-                                            "Please confirm you've read the settings instructions",
+                                            context.getString(R.string.onboarding_confirm_required),
                                             android.widget.Toast.LENGTH_LONG
                                         ).show()
                                         settingsToastShown = true

@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import com.github.gezimos.inkos.ui.compose.inkOsSafeDrawingPadding
+import com.github.gezimos.inkos.R
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -177,8 +178,8 @@ class RecentsFragment : Fragment() {
                         if (!hasShownDialog) {
                             hasShownDialog = true
                             showPermissionExplanationDialog(
-                                title = "Usage Stats Permission",
-                                message = "This app needs usage stats permission to show your recently used apps. You will be taken to Android settings to grant this permission.",
+                                title = getString(R.string.perm_usage_title),
+                                message = getString(R.string.perm_usage_body),
                                 onContinue = { requestUsageStatsPermission() }
                             )
                         }
@@ -622,7 +623,7 @@ class RecentsFragment : Fragment() {
             val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)
             startActivity(intent)
         } catch (_: Exception) {
-            showShortToast("Unable to open settings")
+            showShortToast(getString(R.string.toast_open_settings_failed))
         }
     }
 

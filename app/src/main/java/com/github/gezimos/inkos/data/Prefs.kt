@@ -217,7 +217,7 @@ class Prefs(val context: Context) {
         }
 
     var quoteText: String
-        get() = prefs.getString(QUOTE_TEXT, "Stay inspired") ?: "Stay inspired"
+        get() = prefs.getString(QUOTE_TEXT, null) ?: context.getString(R.string.default_quote)
         set(value) = prefs.edit { putString(QUOTE_TEXT, value) }
 
     var quoteSize: Int
@@ -361,7 +361,7 @@ class Prefs(val context: Context) {
     fun loadThemeFromJson(json: String) {
         @Suppress("UNCHECKED_CAST")
         val root = gson.fromJson(json, Map::class.java) as? Map<String, Any?>
-            ?: throw IllegalArgumentException("Invalid theme file")
+            ?: throw IllegalArgumentException(context.getString(R.string.error_invalid_theme_file))
         val prefsMap = root["prefs"] as? Map<String, Any?> ?: emptyMap()
         val filtered = prefsMap.filterKeys { it in themeExportKeys }
         loadThemeFromMap(filtered, useCommit = true)
@@ -1343,8 +1343,10 @@ class Prefs(val context: Context) {
         set(value) = prefs.edit { putInt(LETTERS_TEXT_SIZE, value) }
 
     var lettersTitle: String
-        get() = prefs.getString(LETTERS_TITLE, "Letters") ?: "Letters"
+        get() = prefs.getString(LETTERS_TITLE, null) ?: context.getString(R.string.letters_screen_title)
         set(value) = prefs.edit { putString(LETTERS_TITLE, value) }
+
+    fun resetLettersTitle() = prefs.edit { remove(LETTERS_TITLE) }
 
     var lettersTitleFont: Constants.FontFamily
         get() = try {

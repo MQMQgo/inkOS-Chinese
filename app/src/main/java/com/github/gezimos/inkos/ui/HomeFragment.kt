@@ -192,10 +192,10 @@ class HomeFragmentCompose : Fragment() {
                         onCustomFontSelected?.invoke(typeface, fontFile.absolutePath)
                     } catch (e: Exception) {
                         e.printStackTrace()
-                        dialogManager.showErrorDialog(requireContext(), title = "Invalid Font File", message = "The selected file could not be loaded as a font. Please choose a valid font file.")
+                        dialogManager.showErrorDialog(requireContext(), title = getString(R.string.error_invalid_font_title), message = getString(R.string.error_invalid_font_message))
                     }
                 } else {
-                    dialogManager.showErrorDialog(requireContext(), title = "File Error", message = "Could not copy the selected file. Please try again.")
+                    dialogManager.showErrorDialog(requireContext(), title = getString(R.string.error_copy_file_title), message = getString(R.string.error_copy_file_message))
                 }
             }
         }
@@ -281,18 +281,18 @@ class HomeFragmentCompose : Fragment() {
                         val isLastEditStep = editTooltipStep == 5
                         TooltipBubble(
                             title = when (editTooltipStep) {
-                                1 -> "Background"
-                                2 -> "Clock"
-                                3 -> "Date"
-                                4 -> "Bottom Widget"
-                                else -> "Cue Bars"
+                                1 -> getString(R.string.background_color)
+                                2 -> getString(R.string.clock_section)
+                                3 -> getString(R.string.date_row_section)
+                                4 -> getString(R.string.bottom_widget)
+                                else -> getString(R.string.edit_home_drag_handles)
                             },
                             lines = when (editTooltipStep) {
-                                1 -> listOf("Tap on background (empty areas) to edit theme, alignment, etc")
-                                2 -> listOf("Tap on clock to edit clock widget, font size, clock format etc")
-                                3 -> listOf("Click on date to edit date row size, font, format etc")
-                                4 -> listOf("Click on bottom widget to edit widget size, widget type & other settings")
-                                else -> listOf("Drag the cue bars to adjust the position of the home elements")
+                                1 -> listOf(getString(R.string.edit_home_background_tip))
+                                2 -> listOf(getString(R.string.edit_home_clock_tip))
+                                3 -> listOf(getString(R.string.edit_home_date_tip))
+                                4 -> listOf(getString(R.string.edit_home_widget_tip))
+                                else -> listOf(getString(R.string.edit_home_drag_tip))
                             },
                             icon = when (editTooltipStep) {
                                 1 -> Icons.Rounded.Palette
@@ -302,7 +302,7 @@ class HomeFragmentCompose : Fragment() {
                                 else -> Icons.Rounded.DragHandle
                             },
                             alignment = Alignment.Center,
-                            nextLabel = if (isLastEditStep) "Done" else "Next",
+                            nextLabel = if (isLastEditStep) getString(R.string.done) else getString(R.string.btn_next),
                             minContentHeight = 80.dp,
                             onNext = {
                                 if (isLastEditStep) {
@@ -898,7 +898,7 @@ class HomeFragmentCompose : Fragment() {
         } catch (_: Exception) {
             appWidgetHelper.deallocateWidgetId(widgetId)
             pendingWidgetId = -1
-            requireContext().showShortToast("Widget picker not available")
+            requireContext().showShortToast(getString(R.string.widget_picker_unavailable))
         }
     }
 

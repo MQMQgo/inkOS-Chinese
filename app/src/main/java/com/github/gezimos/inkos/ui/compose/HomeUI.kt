@@ -1,6 +1,7 @@
 package com.github.gezimos.inkos.ui.compose
 
 import android.content.Intent
+import android.content.Context
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
@@ -110,6 +111,7 @@ import androidx.compose.ui.layout.boundsInParent
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInRoot
 import com.github.gezimos.inkos.helper.utils.VibrationHelper
+import com.github.gezimos.inkos.helper.formatDisplayDate
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
@@ -267,13 +269,13 @@ fun HomeUI(
                 TooltipBubble(
                     title = when (tooltipStep) {
                         1 -> stringResource(R.string.settings_name)
-                        2 -> "Home Pages"
-                        else -> "App Drawer"
+                        2 -> stringResource(R.string.home_pages)
+                        else -> stringResource(R.string.app_drawer)
                     },
                     lines = when (tooltipStep) {
                         1 -> listOf(stringResource(R.string.tooltip_pinch_settings))
-                        2 -> listOf("Swipe up/down to move between pages")
-                        else -> listOf("Long swipe up to open App Drawer")
+                        2 -> listOf(stringResource(R.string.home_page_swipe_tip))
+                        else -> listOf(stringResource(R.string.home_long_swipe_tip))
                     },
                     icon = when (tooltipStep) {
                         2 -> Icons.Rounded.SwipeVertical
@@ -282,7 +284,7 @@ fun HomeUI(
                     },
                     animFrames = if (tooltipStep == 1) listOf(R.drawable.pinch1, R.drawable.pinch2) else emptyList(),
                     alignment = Alignment.Center,
-                    nextLabel = if (isLastStep) "Done" else "Next",
+                    nextLabel = if (isLastStep) stringResource(R.string.done) else stringResource(R.string.btn_next),
                     onNext = {
                         prefs.markTooltipShown(currentKey)
                         tooltipStep = when {
@@ -2667,7 +2669,7 @@ private fun EventsBlock(
                 else -> {
                     val event = state.eventsList.getOrNull(state.eventsIndex.coerceIn(0, state.eventsList.size - 1))
                         ?: state.eventsList.first()
-                    val dateStr = formatEventDate(event.beginTime)
+                    val dateStr = formatEventDate(context, event.beginTime)
                     val locationStr = event.location?.takeIf { it.isNotBlank() }
                     val titleLine = buildString {
                         append(dateStr)
@@ -2709,17 +2711,18 @@ private fun EventsBlock(
     }
 }
 
-private fun formatEventDate(beginTime: Long): String {
+private fun formatEventDate(context: Context, beginTime: Long): String {
     val cal = java.util.Calendar.getInstance()
     cal.timeInMillis = beginTime
     val today = java.util.Calendar.getInstance()
     val isToday = cal.get(java.util.Calendar.YEAR) == today.get(java.util.Calendar.YEAR) &&
             cal.get(java.util.Calendar.DAY_OF_YEAR) == today.get(java.util.Calendar.DAY_OF_YEAR)
     return if (isToday) {
-        java.text.SimpleDateFormat("HH:mm", Locale.getDefault()).format(java.util.Date(beginTime))
-            .let { "Today $it" }
+        val time = java.text.SimpleDateFormat("HH:mm", context.resources.configuration.locales[0])
+            .format(java.util.Date(beginTime))
+        context.getString(R.string.event_time_today, time)
     } else {
-        java.text.SimpleDateFormat("MMM d, HH:mm", Locale.getDefault()).format(java.util.Date(beginTime))
+        context.formatDisplayDate(R.string.date_pattern_event, java.util.Date(beginTime))
     }
 }
 
@@ -3347,7 +3350,7 @@ private fun HomeAndroidWidget(
                         Text(stringResource(R.string.loading_widget), color = Theme.colors.text.copy(alpha = 0.5f), fontSize = 14.sp)
                     }
                 } else {
-                    Text("Tap to choose widget", color = Theme.colors.text.copy(alpha = 0.5f), fontSize = 14.sp)
+                    Text(stringResource(R.string.tap_to_choose_widget), color = Theme.colors.text.copy(alpha = 0.5f), fontSize = 14.sp)
                 }
 
                 if (isEditMode) {
@@ -3658,6 +3661,7 @@ private fun HomeAppButton(
     val isOtherProfile = app.user != null && app.user != android.os.Process.myUserHandle()
     val rawLabel = (app.label.ifBlank { placeholderLabel }).let { if (isOtherProfile) "$it^" else it }
     val notificationInfo = state.notifications[app.activityPackage]
+    val fallbackMessage = stringResource(R.string.notification_received)
 
     // Use pre-computed badgeConfig from pager
     val badgeDisplay = remember(
@@ -3665,14 +3669,16 @@ private fun HomeAppButton(
         app.activityPackage,
         notificationInfo,
         state.mediaInfo,
-        badgeConfig
+        badgeConfig,
+        fallbackMessage
     ) {
         buildNotificationBadgeDisplay(
             label = rawLabel,
             packageName = app.activityPackage,
             notificationInfo = notificationInfo,
             mediaInfo = state.mediaInfo,
-            config = badgeConfig
+            config = badgeConfig,
+            fallbackMessage = fallbackMessage
         )
     }
 
@@ -4424,14 +4430,22 @@ internal fun HomeScreenPreview(preset: ThemePreset, isDark: Boolean) {
         } else {
             kotlin.math.ceil(preset.homeAppsNum.toDouble() / pagesNum).toInt().coerceAtLeast(1)
         }
-        val previewLabels = listOf("Phone", "Messages", "Camera", "Gallery", "Contacts", "Spotify", "YouTube", "Podcasts", "Calendar", "Clock", "Maps", "Notes", "Music", "Weather", "Settings")
+        val previewLabels = listOf(
+            context.getString(R.string.preview_phone), context.getString(R.string.preview_messages),
+            context.getString(R.string.preview_camera), context.getString(R.string.preview_gallery),
+            context.getString(R.string.guide_contacts), "Spotify", "YouTube",
+            context.getString(R.string.preview_podcasts), context.getString(R.string.preview_calendar),
+            context.getString(R.string.clock_section), context.getString(R.string.preview_maps),
+            context.getString(R.string.preview_notes), context.getString(R.string.guide_music),
+            context.getString(R.string.preview_weather), context.getString(R.string.settings_name)
+        )
         val resolved = pm.queryIntentActivities(launchIntent, PackageManager.GET_META_DATA)
             .filter { it.activityInfo.packageName != context.packageName }
             .take(appsPerPage)
         val fakeApps = resolved.mapIndexed { i, ri ->
             HomeAppUiState(
                 id = i,
-                label = previewLabels.getOrElse(i) { "App" },
+                label = previewLabels.getOrElse(i) { context.getString(R.string.preview_app) },
                 font = presetTypeface,
                 color = textColorInt,
                 activityPackage = ri.activityInfo.packageName,
@@ -4445,11 +4459,11 @@ internal fun HomeScreenPreview(preset: ThemePreset, isDark: Boolean) {
         val fakeEventList = if (isEvents) {
             listOf(
                 com.github.gezimos.inkos.helper.CalendarEventsHelper.CalendarEvent(
-                    eventId = 1L, title = "Team Standup", location = null,
+                    eventId = 1L, title = context.getString(R.string.preview_team_standup), location = null,
                     beginTime = 1704362400000L, endTime = 1704366000000L,
                 ),
                 com.github.gezimos.inkos.helper.CalendarEventsHelper.CalendarEvent(
-                    eventId = 2L, title = "Lunch", location = null,
+                    eventId = 2L, title = context.getString(R.string.preview_lunch), location = null,
                     beginTime = 1704376800000L, endTime = 1704380400000L,
                 ),
             )
@@ -4457,7 +4471,7 @@ internal fun HomeScreenPreview(preset: ThemePreset, isDark: Boolean) {
         HomeUiRenderState(
             homeApps = fakeApps,
             clockText = "10:24",
-            dateText = "Mon, Mar 3",
+            dateText = context.getString(R.string.option_date_format_2),
             amPmText = "AM",
             is24Hour = true,
             isCharging = false,
@@ -4468,7 +4482,7 @@ internal fun HomeScreenPreview(preset: ThemePreset, isDark: Boolean) {
             showNotificationCount = preset.showNotificationCount,
             notificationCount = if (preset.showNotificationCount) 3 else 0,
             showQuote = !isEvents,
-            quoteText = preset.quoteText ?: "stay inspired",
+            quoteText = context.getString(preset.quoteRes ?: R.string.default_quote),
             backgroundColor = bgColorInt,
             backgroundOpacity = preset.backgroundOpacity ?: 255,
             textColor = textColorInt,
@@ -4538,7 +4552,7 @@ internal fun HomeScreenPreview(preset: ThemePreset, isDark: Boolean) {
             eventsList = fakeEventList,
             eventsIndex = 0,
             hasCalendarPermission = isEvents,
-            eventsCalendarName = if (isEvents) "My Calendar" else "",
+            eventsCalendarName = if (isEvents) context.getString(R.string.preview_my_calendar) else "",
             eventsCalendarId = if (isEvents) -2L else -1L,
             eventsFilter = 1,
         )

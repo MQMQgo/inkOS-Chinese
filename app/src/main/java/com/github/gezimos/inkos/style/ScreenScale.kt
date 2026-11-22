@@ -10,17 +10,19 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.github.gezimos.inkos.data.Prefs
+import com.github.gezimos.inkos.R
+import androidx.annotation.StringRes
 
 /** UI scale modes. 0 = auto-detect from screen width. */
-enum class UiScaleMode(val id: Int, val label: String, val scale: Float) {
-    AUTO(0, "", 0f),       // label resolved at runtime to show detected mode
-    TINY(1, "Tiny", 0.65f),
-    SMALL(2, "Small", 0.75f),
-    MEDIUM(3, "Medium", 0.85f),
-    NORMAL(4, "Normal", 0.92f),
-    BIG(5, "Big", 1.0f),
-    LARGE(6, "Large", 1.08f),
-    EXTRA_LARGE(7, "Extra Large", 1.16f);
+enum class UiScaleMode(val id: Int, @StringRes val labelRes: Int, val scale: Float) {
+    AUTO(0, R.string.scale_auto, 0f),       // label resolved at runtime to show detected mode
+    TINY(1, R.string.scale_tiny, 0.65f),
+    SMALL(2, R.string.scale_small, 0.75f),
+    MEDIUM(3, R.string.scale_medium, 0.85f),
+    NORMAL(4, R.string.scale_normal, 0.92f),
+    BIG(5, R.string.scale_big, 1.0f),
+    LARGE(6, R.string.scale_large, 1.08f),
+    EXTRA_LARGE(7, R.string.scale_extra_large, 1.16f);
 
     companion object {
         fun fromId(id: Int): UiScaleMode = entries.firstOrNull { it.id == id } ?: AUTO

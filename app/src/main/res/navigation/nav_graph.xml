@@ -7,7 +7,7 @@
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.github.gezimos.inkos.ui.HomeFragmentCompose"
-        android:label="mainFragment">
+        android:label="@string/settings_home_title">
         <action
             android:id="@+id/action_mainFragment_to_appListFragment"
             app:destination="@id/appListFragment" />
@@ -32,7 +32,7 @@
     <fragment
         android:id="@+id/appListFragment"
         android:name="com.github.gezimos.inkos.ui.AppsFragment"
-        android:label="appListFragment">
+        android:label="@string/app_drawer">
         <argument
             android:name="flag"
             app:argType="string"
@@ -51,12 +51,12 @@
     <fragment
         android:id="@+id/appDrawerListFragment"
         android:name="com.github.gezimos.inkos.ui.AppsFragment"
-        android:label="AppsFragment" />
+        android:label="@string/app_drawer" />
 
     <fragment
         android:id="@+id/appsFragment"
         android:name="com.github.gezimos.inkos.ui.AppsFragment"
-        android:label="AppsFragment">
+        android:label="@string/app_drawer">
         <argument
             android:name="flag"
             app:argType="string"
@@ -70,27 +70,27 @@
     <fragment
         android:id="@+id/lettersFragment"
         android:name="com.github.gezimos.inkos.ui.notifications.LettersFragment"
-        android:label="LettersFragment" />
+        android:label="@string/letters_screen_title" />
 
     <fragment
         android:id="@+id/recentsFragment"
         android:name="com.github.gezimos.inkos.ui.RecentsFragment"
-        android:label="RecentsFragment" />
+        android:label="@string/option_recents" />
 
     <fragment
         android:id="@+id/simpleTrayFragment"
         android:name="com.github.gezimos.inkos.ui.notifications.SimpleTrayFragment"
-        android:label="SimpleTrayFragment" />
+        android:label="@string/simple_tray_title" />
 
     <fragment
         android:id="@+id/hubFragment"
         android:name="com.github.gezimos.inkos.ui.notifications.HubFragment"
-        android:label="HubFragment" />
+        android:label="@string/option_hub" />
 
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.github.gezimos.inkos.ui.SettingsFragment"
-        android:label="SettingsFragment">
+        android:label="@string/settings_name">
         <action
             android:id="@+id/action_settingsFragment_to_appListFragment"
             app:destination="@id/appListFragment" />
@@ -99,25 +99,25 @@
     <fragment
         android:id="@+id/wallpaperFragment"
         android:name="com.github.gezimos.inkos.ui.settings.WallpaperFragment"
-        android:label="WallpaperFragment" />
+        android:label="@string/wallpaper" />
 
     <fragment
         android:id="@+id/colorEditorFragment"
         android:name="com.github.gezimos.inkos.ui.settings.ColorEditorFragment"
-        android:label="ColorEditorFragment" />
+        android:label="@string/element_colors" />
 
     <fragment
         android:id="@+id/themePresetsFragment"
         android:name="com.github.gezimos.inkos.ui.settings.ThemePresetsFragment"
-        android:label="ThemePresetsFragment" />
+        android:label="@string/themes" />
 
     <fragment
         android:id="@+id/guideFragment"
         android:name="com.github.gezimos.inkos.ui.compose.GuideFragment"
-        android:label="GuideFragment" />
+        android:label="@string/guide" />
 
     <fragment
         android:id="@+id/onboardingFragment"
         android:name="com.github.gezimos.inkos.ui.compose.OnboardingFragment"
-        android:label="OnboardingFragment" />
+        android:label="@string/onboarding" />
 </navigation>

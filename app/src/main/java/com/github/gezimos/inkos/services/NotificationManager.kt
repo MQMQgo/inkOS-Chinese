@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.io.File
+import com.github.gezimos.inkos.R
 
 class NotificationManager private constructor(private val context: Context) {
 
@@ -331,21 +332,21 @@ class NotificationManager private constructor(private val context: Context) {
             notifTitle = appLabel
             
             notifText = when (category) {
-                android.app.Notification.CATEGORY_MESSAGE -> "New message"
-                android.app.Notification.CATEGORY_EMAIL -> "New email"
-                android.app.Notification.CATEGORY_CALL -> "Missed call"
-                android.app.Notification.CATEGORY_ALARM -> "Alarm"
-                android.app.Notification.CATEGORY_REMINDER -> "Reminder"
-                android.app.Notification.CATEGORY_EVENT -> "Event"
-                android.app.Notification.CATEGORY_PROMO -> "Promotion"
-                android.app.Notification.CATEGORY_TRANSPORT -> "Media playing"
-                android.app.Notification.CATEGORY_SYSTEM -> "System notification"
-                android.app.Notification.CATEGORY_SERVICE -> "Service notification"
-                android.app.Notification.CATEGORY_ERROR -> "Error"
-                android.app.Notification.CATEGORY_PROGRESS -> "Progress update"
-                android.app.Notification.CATEGORY_SOCIAL -> "Social update"
-                android.app.Notification.CATEGORY_STATUS -> "Status update"
-                android.app.Notification.CATEGORY_RECOMMENDATION -> "Recommendation"
+                android.app.Notification.CATEGORY_MESSAGE -> context.getString(R.string.notification_new_message)
+                android.app.Notification.CATEGORY_EMAIL -> context.getString(R.string.notification_new_email)
+                android.app.Notification.CATEGORY_CALL -> context.getString(R.string.notification_missed_call)
+                android.app.Notification.CATEGORY_ALARM -> context.getString(R.string.notification_alarm)
+                android.app.Notification.CATEGORY_REMINDER -> context.getString(R.string.notification_reminder)
+                android.app.Notification.CATEGORY_EVENT -> context.getString(R.string.notification_event)
+                android.app.Notification.CATEGORY_PROMO -> context.getString(R.string.notification_promotion)
+                android.app.Notification.CATEGORY_TRANSPORT -> context.getString(R.string.notification_media_playing)
+                android.app.Notification.CATEGORY_SYSTEM -> context.getString(R.string.notification_system)
+                android.app.Notification.CATEGORY_SERVICE -> context.getString(R.string.notification_service)
+                android.app.Notification.CATEGORY_ERROR -> context.getString(R.string.notification_error)
+                android.app.Notification.CATEGORY_PROGRESS -> context.getString(R.string.notification_progress)
+                android.app.Notification.CATEGORY_SOCIAL -> context.getString(R.string.notification_social)
+                android.app.Notification.CATEGORY_STATUS -> context.getString(R.string.notification_status)
+                android.app.Notification.CATEGORY_RECOMMENDATION -> context.getString(R.string.notification_recommendation)
                 else -> null // Don't show generic fallback - just show app name
             }
         }

@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import androidx.core.net.toUri
+import com.github.gezimos.inkos.R
 
 class SimpleEmailSender {
 
@@ -75,7 +76,7 @@ class SimpleEmailSender {
                 }
             }
         } else {
-            throw ActivityNotFoundException("No email client found")
+            throw ActivityNotFoundException(context.getString(R.string.toast_no_email_client))
         }
     }
 

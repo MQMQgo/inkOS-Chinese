@@ -21,6 +21,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.github.gezimos.common.CrashHandler
 import com.github.gezimos.inkos.style.SettingsTheme
+import com.github.gezimos.inkos.R
 import com.github.gezimos.inkos.style.Theme
 import com.github.gezimos.inkos.ui.dialogs.SheetTitle
 import com.github.gezimos.inkos.helper.utils.SimpleEmailSender
@@ -83,7 +84,7 @@ class CrashReportActivity : AppCompatActivity() {
 
         val emailSender = SimpleEmailSender()
         val crashReportContent = getString(R.string.acra_mail_body)
-        val subject = String.format("Crash Report %s - %s", pkgName, pkgVersion)
+        val subject = getString(R.string.crash_report_subject, pkgName, pkgVersion)
         val recipient = getString(R.string.acra_email)
 
         emailSender.sendCrashReport(context, crashReportContent, crashFileUris, subject, recipient)

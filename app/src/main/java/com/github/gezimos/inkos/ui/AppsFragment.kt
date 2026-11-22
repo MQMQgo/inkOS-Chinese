@@ -396,7 +396,7 @@ class AppsFragment : Fragment() {
                     derivedStateOf {
                         val q = state.searchQuery.text
                         if (q.isBlank()) emptyList()
-                        else com.github.gezimos.inkos.helper.SettingsSearchHelper.search(q)
+                        else com.github.gezimos.inkos.helper.SettingsSearchHelper.search(requireContext(), q)
                     }
                 }
                 LaunchedEffect(state.searchQuery.text) {
@@ -468,9 +468,8 @@ class AppsFragment : Fragment() {
                             sortedApps
                         } else if (state.azFilterLetter != null) {
                             val filterChar = state.azFilterLetter!!
-                            sortedApps.filter { app ->
-                                app.normalizedFirstChar == filterChar
-                            }
+                            val locale = resources.configuration.locales[0]
+                            sortedApps.filter { app -> app.azIndexLetter(locale) == filterChar }
                         } else if (!isSearchActive) {
                             sortedApps
                         } else {
@@ -532,7 +531,7 @@ class AppsFragment : Fragment() {
                                 for ((app, _) in scored) add(app)
 
                                 if (appsDrawer.appDrawerSearchWebEnabled) {
-                                    add(SearchHelper.createWebSearchItem(query))
+                                    add(SearchHelper.createWebSearchItem(ctx, query))
                                 }
                             }
                         }
@@ -1400,7 +1399,7 @@ class AppsFragment : Fragment() {
                     if (appsRepo.launchSyntheticOrSystemApp(requireContext(), app.activityPackage, this, app.shortcutId)) return@promptBiometric
                     viewModel.launchApp(app)
                 },
-                title = "Authenticate to open ${app.label}"
+                title = getString(R.string.text_biometric_login_app, app.label)
             )
         } else {
             if (appsRepo.launchSyntheticOrSystemApp(requireContext(), app.activityPackage, this, app.shortcutId)) return
@@ -1473,7 +1472,10 @@ class AppsFragment : Fragment() {
                 viewModel.toggleAppLock(app)
                 onSuccess()
             },
-            title = if (viewModel.isAppLocked(app)) "Authenticate to unlock" else "Authenticate to lock"
+            title = getString(
+                if (viewModel.isAppLocked(app)) R.string.biometric_unlock_prompt
+                else R.string.biometric_lock_prompt
+            )
         )
     }
 
@@ -1481,7 +1483,7 @@ class AppsFragment : Fragment() {
         openAppInfo(requireContext(), app.user, app.activityPackage)
     }
 
-    private fun promptBiometric(onSuccess: () -> Unit, title: String = "Authenticate") {
+    private fun promptBiometric(onSuccess: () -> Unit, title: String = getString(R.string.biometric_prompt)) {
         val biometricManager = BiometricManager.from(requireContext())
         val canAuth = biometricManager.canAuthenticate(
             BiometricManager.Authenticators.BIOMETRIC_STRONG or
@@ -1506,7 +1508,7 @@ class AppsFragment : Fragment() {
         val biometricPrompt = BiometricPrompt(this, executor, callback)
         val promptInfo = BiometricPrompt.PromptInfo.Builder()
             .setTitle(title)
-            .setNegativeButtonText("Cancel")
+            .setNegativeButtonText(getString(R.string.cancel))
             .build()
 
         biometricPrompt.authenticate(promptInfo)

@@ -562,8 +562,9 @@ class AppsRepository(application: Application) {
     private fun computeAzLetters(apps: List<AppListItem>): List<Char> {
         return try {
             val present = BooleanArray(26)
+            val locale = appContext.resources.configuration.locales[0]
             for (app in apps) {
-                val ch = app.normalizedFirstChar ?: continue
+                val ch = app.azIndexLetter(locale) ?: continue
                 present[ch - 'A'] = true
             }
             val letters = mutableListOf<Char>()

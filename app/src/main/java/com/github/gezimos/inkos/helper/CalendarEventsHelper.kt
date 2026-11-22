@@ -3,6 +3,8 @@ package com.github.gezimos.inkos.helper
 import android.content.Context
 import android.provider.CalendarContract
 import androidx.core.content.ContextCompat
+import com.github.gezimos.inkos.R
+
 object CalendarEventsHelper {
 
     data class CalendarEvent(
@@ -37,7 +39,7 @@ object CalendarEventsHelper {
                     val list = mutableListOf<Pair<Long, String>>()
                     while (cursor.moveToNext()) {
                         val id = cursor.getLong(idIdx)
-                        val name = cursor.getString(nameIdx) ?: "Calendar $id"
+                        val name = cursor.getString(nameIdx) ?: context.getString(R.string.calendar_fallback_name, id)
                         list.add(id to name)
                     }
                     list

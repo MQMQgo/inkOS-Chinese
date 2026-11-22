@@ -4,6 +4,7 @@ import android.os.UserHandle
 import java.text.Collator
 import java.text.Normalizer
 import java.util.Locale
+import android.icu.text.AlphabeticIndex
 
 private val DIACRITICS = Regex("\\p{InCombiningDiacriticalMarks}+")
 private val PUNCTUATION = Regex("[-_+,. ]")
@@ -14,6 +15,10 @@ internal fun normalizeLabel(input: String): String {
     return Normalizer.normalize(input.uppercase(Locale.getDefault()), Normalizer.Form.NFD)
         .replace(DIACRITICS, "")
         .replace(PUNCTUATION, "")
+}
+
+private val pinyinIndex by lazy {
+    AlphabeticIndex<Any>(Locale.SIMPLIFIED_CHINESE).addLabels(Locale.ENGLISH).buildImmutableIndex()
 }
 
 val collator: Collator = Collator.getInstance().apply {
@@ -42,10 +47,22 @@ data class AppListItem(
         if (customLabel.isNotEmpty() && customLabel != activityLabel) normalizeLabel(activityLabel) else null
     }
 
-    /** Pre-computed first character of normalized label for instant A-Z filtering. */
-    val normalizedFirstChar: Char? by lazy {
+    private val latinInitial: Char? by lazy {
         normalizedLabel.trimStart().firstOrNull()?.takeIf { it in 'A'..'Z' }
     }
+
+    private val pinyinInitial: Char? by lazy {
+        val name = normalizedLabel.trimStart()
+        if (name.isEmpty() || Character.UnicodeScript.of(name.codePointAt(0)) != Character.UnicodeScript.HAN) {
+            null
+        } else {
+            pinyinIndex.getBucket(pinyinIndex.getBucketIndex(name))?.label
+                ?.singleOrNull()?.takeIf { it in 'A'..'Z' }
+        }
+    }
+
+    fun azIndexLetter(locale: Locale): Char? =
+        latinInitial ?: if (locale.language == "zh") pinyinInitial else null
 
     /** Speed up sort and search — lazy so getCollationKey() runs once, not per compareTo() call. */
     private val collationKey by lazy { collator.getCollationKey(label) }

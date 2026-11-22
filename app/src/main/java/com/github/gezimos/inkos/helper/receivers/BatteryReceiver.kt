@@ -5,9 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.BatteryManager
 import com.github.gezimos.inkos.data.Prefs
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import com.github.gezimos.inkos.helper.formatHomeDate
 
 class BatteryReceiver(private val onBatteryUpdate: (String, String, Boolean) -> Unit = { _, _, _ -> }) : BroadcastReceiver() {
 
@@ -24,15 +22,7 @@ class BatteryReceiver(private val onBatteryUpdate: (String, String, Boolean) -> 
         val batteryLevel = level * 100 / scale.toFloat()
         val batteryLevelInt = batteryLevel.toInt()
 
-        val datePattern = when (prefs.dateFormatStyle) {
-            1 -> "EEE, MMM d"
-            2 -> "MMM d"
-            3 -> "d MMM"
-            4 -> "EEEE"
-            else -> "EEE, d MMM"
-        }
-        val dateFormat = SimpleDateFormat(datePattern, Locale.getDefault())
-        val currentDate = dateFormat.format(Date())
+        val currentDate = context.formatHomeDate(prefs.dateFormatStyle)
 
         val newBatteryText = "$batteryLevelInt%"
 

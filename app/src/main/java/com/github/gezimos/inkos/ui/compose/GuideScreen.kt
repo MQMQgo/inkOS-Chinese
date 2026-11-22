@@ -81,6 +81,8 @@ import com.github.gezimos.inkos.style.SettingsTheme
 import com.github.gezimos.inkos.style.Theme
 import com.github.gezimos.inkos.style.rememberScreenScale
 import com.github.gezimos.inkos.style.scaled
+import androidx.compose.ui.res.stringResource
+import androidx.annotation.StringRes
 
 class GuideFragment : Fragment() {
     override fun onCreateView(
@@ -157,7 +159,7 @@ object GuideScreen {
                 ) {
                     // Big title — same for all pages
                     Text(
-                        text = "GUIDE",
+                        text = stringResource(R.string.guide_title),
                         style = SettingsTheme.typography.title,
                         fontSize = bigTitleSize,
                         fontWeight = FontWeight.Black,
@@ -203,21 +205,21 @@ object GuideScreen {
                     Spacer(modifier = Modifier.weight(1f))
                     Text(
                         text = when (category) {
-                            null -> "PICK INPUT METHOD"
+                            null -> stringResource(R.string.guide_pick_input)
                             GuideCategory.Touch -> when (page) {
-                                0 -> "HOME SCREEN INTERACTIONS"
-                                1 -> "HOME GESTURES"
-                                2 -> "HOME NOTIFICATIONS"
-                                3 -> "HOME WIDGETS"
+                                0 -> stringResource(R.string.guide_home_interactions)
+                                1 -> stringResource(R.string.guide_home_gestures)
+                                2 -> stringResource(R.string.guide_home_notifications)
+                                3 -> stringResource(R.string.guide_home_widgets)
                                 else -> ""
                             }
                             GuideCategory.DPadT9 -> when (page) {
-                                0 -> "HOME SCREEN"
-                                1 -> "LETTERS"
+                                0 -> stringResource(R.string.guide_home_screen)
+                                1 -> stringResource(R.string.guide_letters)
                                 else -> ""
                             }
-                            GuideCategory.Qwerty -> "QWERTY"
-                            GuideCategory.Search -> "SEARCH"
+                            GuideCategory.Qwerty -> stringResource(R.string.guide_qwerty)
+                            GuideCategory.Search -> stringResource(R.string.guide_search)
                         },
                         style = SettingsTheme.typography.title,
                         fontSize = (titleFontSize.value * 0.7f).sp,
@@ -257,7 +259,7 @@ object GuideScreen {
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
-                                text = "BACK",
+                                text = stringResource(R.string.btn_back_upper),
                                 style = SettingsTheme.typography.title,
                                 fontSize = titleFontSize,
                                 fontWeight = FontWeight.Bold,
@@ -305,7 +307,7 @@ object GuideScreen {
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
-                                text = "HOME",
+                                text = stringResource(R.string.guide_home_button),
                                 style = SettingsTheme.typography.title,
                                 fontSize = titleFontSize,
                                 fontWeight = FontWeight.Bold,
@@ -333,7 +335,7 @@ object GuideScreen {
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
-                                text = "BACK",
+                                text = stringResource(R.string.btn_back_upper),
                                 style = SettingsTheme.typography.title,
                                 fontSize = titleFontSize,
                                 fontWeight = FontWeight.Bold,
@@ -392,7 +394,7 @@ object GuideScreen {
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
-                                text = if (page < totalPages - 1) "NEXT" else "DONE",
+                                text = if (page < totalPages - 1) stringResource(R.string.btn_next) else stringResource(R.string.guide_done),
                                 style = SettingsTheme.typography.title,
                                 fontSize = titleFontSize,
                                 fontWeight = FontWeight.Bold,
@@ -418,8 +420,8 @@ object GuideScreen {
     @Composable
     private fun GuideItem(
         icon: androidx.compose.ui.graphics.vector.ImageVector,
-        title: String,
-        description: String,
+        @StringRes title: Int,
+        @StringRes description: Int,
         titleFontSize: androidx.compose.ui.unit.TextUnit,
         bodyFontSize: androidx.compose.ui.unit.TextUnit,
         screenScale: Float,
@@ -438,14 +440,14 @@ object GuideScreen {
             )
             Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
                 Text(
-                    text = title,
+                    text = stringResource(title),
                     style = SettingsTheme.typography.title,
                     fontSize = titleFontSize,
                     fontWeight = FontWeight.Bold,
                     color = textColor
                 )
                 Text(
-                    text = description,
+                    text = stringResource(description),
                     style = SettingsTheme.typography.body,
                     fontSize = bodyFontSize,
                     color = textColor.copy(alpha = 0.7f)
@@ -462,10 +464,10 @@ object GuideScreen {
         textColor: androidx.compose.ui.graphics.Color
     ) {
         Column(verticalArrangement = Arrangement.spacedBy(20.dp.scaled(screenScale))) {
-            GuideItem(Icons.Rounded.Settings, "Pinch (zoom out)", "In empty areas to open Quick Menu", titleFontSize, bodyFontSize, screenScale, textColor)
-            GuideItem(Icons.Rounded.TouchApp, "Long press app", "To choose or replace shortcuts", titleFontSize, bodyFontSize, screenScale, textColor)
-            GuideItem(Icons.Rounded.Widgets, "Tap clock/date/quote", "To access other shortcuts", titleFontSize, bodyFontSize, screenScale, textColor)
-            GuideItem(Icons.Rounded.SwipeVertical, "Short swipes", "To move between home pages", titleFontSize, bodyFontSize, screenScale, textColor)
+            GuideItem(Icons.Rounded.Settings, R.string.guide_pinch, R.string.guide_pinch_desc, titleFontSize, bodyFontSize, screenScale, textColor)
+            GuideItem(Icons.Rounded.TouchApp, R.string.guide_long_press_app, R.string.guide_choose_shortcuts, titleFontSize, bodyFontSize, screenScale, textColor)
+            GuideItem(Icons.Rounded.Widgets, R.string.guide_tap_widgets, R.string.guide_access_shortcuts, titleFontSize, bodyFontSize, screenScale, textColor)
+            GuideItem(Icons.Rounded.SwipeVertical, R.string.guide_short_swipes, R.string.guide_move_home_pages, titleFontSize, bodyFontSize, screenScale, textColor)
         }
     }
 
@@ -477,10 +479,10 @@ object GuideScreen {
         textColor: androidx.compose.ui.graphics.Color
     ) {
         Column(verticalArrangement = Arrangement.spacedBy(20.dp.scaled(screenScale))) {
-            GuideItem(Icons.Rounded.ArrowUpward, "Swipe Up", "App Drawer — the list of all your apps", titleFontSize, bodyFontSize, screenScale, textColor)
-            GuideItem(Icons.Rounded.ArrowDownward, "Swipe Down", "Simple Tray — Android-style notifications", titleFontSize, bodyFontSize, screenScale, textColor)
-            GuideItem(Icons.Rounded.ArrowBack, "Swipe Left", "Letters — cached long-form notifications", titleFontSize, bodyFontSize, screenScale, textColor)
-            GuideItem(Icons.Rounded.ArrowForward, "Swipe Right", "Recents — recently used apps", titleFontSize, bodyFontSize, screenScale, textColor)
+            GuideItem(Icons.Rounded.ArrowUpward, R.string.swipe_up_app, R.string.guide_swipe_up_desc, titleFontSize, bodyFontSize, screenScale, textColor)
+            GuideItem(Icons.Rounded.ArrowDownward, R.string.swipe_down_app, R.string.guide_swipe_down_desc, titleFontSize, bodyFontSize, screenScale, textColor)
+            GuideItem(Icons.Rounded.ArrowBack, R.string.swipe_left_app, R.string.guide_swipe_left_desc, titleFontSize, bodyFontSize, screenScale, textColor)
+            GuideItem(Icons.Rounded.ArrowForward, R.string.swipe_right_app, R.string.guide_swipe_right_desc, titleFontSize, bodyFontSize, screenScale, textColor)
         }
     }
 
@@ -492,10 +494,10 @@ object GuideScreen {
         textColor: androidx.compose.ui.graphics.Color
     ) {
         Column(verticalArrangement = Arrangement.spacedBy(20.dp.scaled(screenScale))) {
-            GuideItem(Icons.Rounded.Emergency, "Signal*", "Asterisk or dot indicates a notification", titleFontSize, bodyFontSize, screenScale, textColor)
-            GuideItem(Icons.Rounded.SpeakerNotes, "Signal", "Notification text appears under the app name", titleFontSize, bodyFontSize, screenScale, textColor)
-            GuideItem(Icons.Rounded.Lyrics, "Spotify", "Now playing info shown under the app", titleFontSize, bodyFontSize, screenScale, textColor)
-            GuideItem(Icons.Rounded.FilterList, "Allow List", "Settings / Notifications / Home Allow List", titleFontSize, bodyFontSize, screenScale, textColor)
+            GuideItem(Icons.Rounded.Emergency, R.string.guide_notification_badge, R.string.guide_notification_badge_desc, titleFontSize, bodyFontSize, screenScale, textColor)
+            GuideItem(Icons.Rounded.SpeakerNotes, R.string.guide_notification_text, R.string.guide_notification_text_desc, titleFontSize, bodyFontSize, screenScale, textColor)
+            GuideItem(Icons.Rounded.Lyrics, R.string.guide_notification_media, R.string.guide_notification_media_desc, titleFontSize, bodyFontSize, screenScale, textColor)
+            GuideItem(Icons.Rounded.FilterList, R.string.guide_allowlist, R.string.guide_allowlist_desc, titleFontSize, bodyFontSize, screenScale, textColor)
         }
     }
 
@@ -507,10 +509,10 @@ object GuideScreen {
         textColor: androidx.compose.ui.graphics.Color
     ) {
         Column(verticalArrangement = Arrangement.spacedBy(20.dp.scaled(screenScale))) {
-            GuideItem(Icons.Rounded.FormatQuote, "Quote", "Display a custom text at the bottom of your home screen", titleFontSize, bodyFontSize, screenScale, textColor)
-            GuideItem(Icons.Rounded.CalendarMonth, "Events", "Show upcoming calendar events from your device", titleFontSize, bodyFontSize, screenScale, textColor)
-            GuideItem(Icons.Rounded.Widgets, "Android Widget", "Embed any Android widget on your home screen", titleFontSize, bodyFontSize, screenScale, textColor)
-            GuideItem(Icons.Rounded.Timer, "Total Usage", "Track your daily screen time at a glance", titleFontSize, bodyFontSize, screenScale, textColor)
+            GuideItem(Icons.Rounded.FormatQuote, R.string.bottom_widget_quote, R.string.guide_quote_desc, titleFontSize, bodyFontSize, screenScale, textColor)
+            GuideItem(Icons.Rounded.CalendarMonth, R.string.bottom_widget_events, R.string.guide_events_desc, titleFontSize, bodyFontSize, screenScale, textColor)
+            GuideItem(Icons.Rounded.Widgets, R.string.bottom_widget_android, R.string.guide_android_widget_desc, titleFontSize, bodyFontSize, screenScale, textColor)
+            GuideItem(Icons.Rounded.Timer, R.string.bottom_widget_total_usage, R.string.guide_usage_desc, titleFontSize, bodyFontSize, screenScale, textColor)
         }
     }
 
@@ -523,18 +525,18 @@ object GuideScreen {
         onPick: (GuideCategory) -> Unit
     ) {
         Column(verticalArrangement = Arrangement.spacedBy(20.dp.scaled(screenScale))) {
-            MenuRow(Icons.Rounded.TouchApp, "Touch", "Tap-driven interactions", titleFontSize, bodyFontSize, screenScale, textColor) { onPick(GuideCategory.Touch) }
-            MenuRow(Icons.Rounded.Dialpad, "DPad / T9", "Hardware keys & dialpad", titleFontSize, bodyFontSize, screenScale, textColor) { onPick(GuideCategory.DPadT9) }
-            MenuRow(Icons.Rounded.Keyboard, "Qwerty", "Typing & nav mode", titleFontSize, bodyFontSize, screenScale, textColor) { onPick(GuideCategory.Qwerty) }
-            MenuRow(Icons.Rounded.Search, "Search", "Apps, contacts, files, web, and more", titleFontSize, bodyFontSize, screenScale, textColor) { onPick(GuideCategory.Search) }
+            MenuRow(Icons.Rounded.TouchApp, R.string.guide_touch, R.string.guide_touch_desc, titleFontSize, bodyFontSize, screenScale, textColor) { onPick(GuideCategory.Touch) }
+            MenuRow(Icons.Rounded.Dialpad, R.string.guide_dpad, R.string.guide_dpad_desc, titleFontSize, bodyFontSize, screenScale, textColor) { onPick(GuideCategory.DPadT9) }
+            MenuRow(Icons.Rounded.Keyboard, R.string.guide_qwerty_title, R.string.guide_qwerty_desc, titleFontSize, bodyFontSize, screenScale, textColor) { onPick(GuideCategory.Qwerty) }
+            MenuRow(Icons.Rounded.Search, R.string.search, R.string.guide_search_desc, titleFontSize, bodyFontSize, screenScale, textColor) { onPick(GuideCategory.Search) }
         }
     }
 
     @Composable
     private fun MenuRow(
         icon: androidx.compose.ui.graphics.vector.ImageVector,
-        title: String,
-        description: String,
+        @StringRes title: Int,
+        @StringRes description: Int,
         titleFontSize: androidx.compose.ui.unit.TextUnit,
         bodyFontSize: androidx.compose.ui.unit.TextUnit,
         screenScale: Float,
@@ -558,14 +560,14 @@ object GuideScreen {
             )
             Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
                 Text(
-                    text = title,
+                    text = stringResource(title),
                     style = SettingsTheme.typography.title,
                     fontSize = titleFontSize,
                     fontWeight = FontWeight.Bold,
                     color = textColor
                 )
                 Text(
-                    text = description,
+                    text = stringResource(description),
                     style = SettingsTheme.typography.body,
                     fontSize = bodyFontSize,
                     color = textColor.copy(alpha = 0.7f)
@@ -582,10 +584,10 @@ object GuideScreen {
         textColor: androidx.compose.ui.graphics.Color
     ) {
         Column(verticalArrangement = Arrangement.spacedBy(20.dp.scaled(screenScale))) {
-            GuideItem(Icons.Rounded.Apps, "Long-press 9", "Open Quick Menu", titleFontSize, bodyFontSize, screenScale, textColor)
-            GuideItem(Icons.Rounded.TouchApp, "Long-press DPad center", "To choose or replace shortcuts", titleFontSize, bodyFontSize, screenScale, textColor)
-            GuideItem(Icons.Rounded.SwipeVertical, "DPad up / down", "Move between apps and home pages", titleFontSize, bodyFontSize, screenScale, textColor)
-            GuideItem(Icons.Rounded.SwapHoriz, "DPad left / right", "Trigger configured swipe actions", titleFontSize, bodyFontSize, screenScale, textColor)
+            GuideItem(Icons.Rounded.Apps, R.string.guide_dpad_hold_9, R.string.guide_open_quick_menu, titleFontSize, bodyFontSize, screenScale, textColor)
+            GuideItem(Icons.Rounded.TouchApp, R.string.guide_dpad_hold_center, R.string.guide_choose_shortcuts, titleFontSize, bodyFontSize, screenScale, textColor)
+            GuideItem(Icons.Rounded.SwipeVertical, R.string.guide_dpad_up_down, R.string.guide_dpad_move, titleFontSize, bodyFontSize, screenScale, textColor)
+            GuideItem(Icons.Rounded.SwapHoriz, R.string.guide_dpad_left_right, R.string.guide_dpad_swipe_action, titleFontSize, bodyFontSize, screenScale, textColor)
         }
     }
 
@@ -597,10 +599,10 @@ object GuideScreen {
         textColor: androidx.compose.ui.graphics.Color
     ) {
         Column(verticalArrangement = Arrangement.spacedBy(20.dp.scaled(screenScale))) {
-            GuideItem(Icons.Rounded.OpenInNew, "DPad center / Enter / 3", "Open the focused notification", titleFontSize, bodyFontSize, screenScale, textColor)
-            GuideItem(Icons.Rounded.Close, "Backspace / Menu / 1", "Dismiss the focused notification", titleFontSize, bodyFontSize, screenScale, textColor)
-            GuideItem(Icons.Rounded.ClearAll, "Long-press (touch only)", "Dismiss all notifications", titleFontSize, bodyFontSize, screenScale, textColor)
-            GuideItem(Icons.Rounded.SwipeVertical, "DPad up / down", "Move between notifications", titleFontSize, bodyFontSize, screenScale, textColor)
+            GuideItem(Icons.Rounded.OpenInNew, R.string.guide_notification_open_keys, R.string.guide_notification_open, titleFontSize, bodyFontSize, screenScale, textColor)
+            GuideItem(Icons.Rounded.Close, R.string.guide_notification_dismiss_keys, R.string.guide_notification_dismiss, titleFontSize, bodyFontSize, screenScale, textColor)
+            GuideItem(Icons.Rounded.ClearAll, R.string.guide_long_press_touch, R.string.guide_notifications_dismiss_all, titleFontSize, bodyFontSize, screenScale, textColor)
+            GuideItem(Icons.Rounded.SwipeVertical, R.string.guide_dpad_up_down, R.string.guide_notifications_move, titleFontSize, bodyFontSize, screenScale, textColor)
         }
     }
 
@@ -612,8 +614,8 @@ object GuideScreen {
         textColor: androidx.compose.ui.graphics.Color
     ) {
         Column(verticalArrangement = Arrangement.spacedBy(20.dp.scaled(screenScale))) {
-            GuideItem(Icons.Rounded.Search, "Search from home", "Just start typing from homescreen", titleFontSize, bodyFontSize, screenScale, textColor)
-            GuideItem(Icons.Rounded.Keyboard, "Navigate with DPad", "Using keyboards such as Pastiera navmode.", titleFontSize, bodyFontSize, screenScale, textColor)
+            GuideItem(Icons.Rounded.Search, R.string.guide_search_from_home, R.string.guide_search_from_home_desc, titleFontSize, bodyFontSize, screenScale, textColor)
+            GuideItem(Icons.Rounded.Keyboard, R.string.guide_keyboard_nav, R.string.guide_keyboard_nav_desc, titleFontSize, bodyFontSize, screenScale, textColor)
         }
     }
 
@@ -625,10 +627,10 @@ object GuideScreen {
         textColor: androidx.compose.ui.graphics.Color
     ) {
         Column(verticalArrangement = Arrangement.spacedBy(20.dp.scaled(screenScale))) {
-            GuideItem(Icons.Rounded.Apps, "Apps", "Find installed apps", titleFontSize, bodyFontSize, screenScale, textColor)
-            GuideItem(Icons.Rounded.Bolt, "Shortcuts", "Find app shortcuts", titleFontSize, bodyFontSize, screenScale, textColor)
-            GuideItem(Icons.Rounded.Contacts, "Contacts", "Find a contact to call or message", titleFontSize, bodyFontSize, screenScale, textColor)
-            GuideItem(Icons.Rounded.Folder, "Files", "Find files on your device", titleFontSize, bodyFontSize, screenScale, textColor)
+            GuideItem(Icons.Rounded.Apps, R.string.shortcut_tab_apps, R.string.guide_find_apps, titleFontSize, bodyFontSize, screenScale, textColor)
+            GuideItem(Icons.Rounded.Bolt, R.string.guide_shortcuts, R.string.guide_find_shortcuts, titleFontSize, bodyFontSize, screenScale, textColor)
+            GuideItem(Icons.Rounded.Contacts, R.string.guide_contacts, R.string.guide_find_contacts, titleFontSize, bodyFontSize, screenScale, textColor)
+            GuideItem(Icons.Rounded.Folder, R.string.guide_files, R.string.guide_find_files, titleFontSize, bodyFontSize, screenScale, textColor)
         }
     }
 
@@ -640,9 +642,9 @@ object GuideScreen {
         textColor: androidx.compose.ui.graphics.Color
     ) {
         Column(verticalArrangement = Arrangement.spacedBy(20.dp.scaled(screenScale))) {
-            GuideItem(Icons.Rounded.MusicNote, "Music", "Find music in your library", titleFontSize, bodyFontSize, screenScale, textColor)
-            GuideItem(Icons.Rounded.Language, "Web", "Search the web", titleFontSize, bodyFontSize, screenScale, textColor)
-            GuideItem(Icons.Rounded.Link, "URL", "Open a URL directly", titleFontSize, bodyFontSize, screenScale, textColor)
+            GuideItem(Icons.Rounded.MusicNote, R.string.guide_music, R.string.guide_find_music, titleFontSize, bodyFontSize, screenScale, textColor)
+            GuideItem(Icons.Rounded.Language, R.string.guide_web, R.string.guide_find_web, titleFontSize, bodyFontSize, screenScale, textColor)
+            GuideItem(Icons.Rounded.Link, R.string.guide_url, R.string.guide_open_url, titleFontSize, bodyFontSize, screenScale, textColor)
         }
     }
 

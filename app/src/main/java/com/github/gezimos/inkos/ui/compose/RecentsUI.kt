@@ -43,15 +43,14 @@ import androidx.compose.ui.unit.sp
 import com.github.gezimos.inkos.AppsDrawerUiState
 import com.github.gezimos.inkos.data.AppListItem
 import com.github.gezimos.inkos.helper.IconShape
+import com.github.gezimos.inkos.helper.formatDisplayDate
 import com.github.gezimos.inkos.helper.IconShapeUtility
 import com.github.gezimos.inkos.helper.ShapeHelper
 import com.github.gezimos.inkos.style.Theme
 import com.github.gezimos.inkos.style.rememberScreenScale
 import com.github.gezimos.inkos.style.scaled
 import com.github.gezimos.inkos.ui.AppsDrawerState
-import java.text.SimpleDateFormat
 import java.util.Date
-import java.util.Locale
 data class RecentAppItem(
     val app: AppListItem,
     val lastUsedTime: Long,
@@ -77,8 +76,8 @@ fun RecentsLayout(
 
     OneTimeTooltip(
         key = "tooltip_recents_shown",
-        title = "Recents",
-        lines = listOf("Tap the title to toggle between Recents and Most Used"),
+        title = stringResource(R.string.option_recents),
+        lines = listOf(stringResource(R.string.recents_toggle_tip)),
         trigger = hasPermission
     )
 
@@ -179,7 +178,7 @@ fun RecentsLayout(
                             ) {
                                 Icon(
                                     imageVector = Icons.Rounded.Settings,
-                                    contentDescription = "Recents settings",
+                                    contentDescription = stringResource(R.string.recents_settings),
                                     tint = if (headerFocused && headerSelectedIndex == 1) bgColor else textColor,
                                     modifier = Modifier
                                         .size(with(density) { uiState.appDrawerSize.sp.scaled(screenScale).toDp() })
@@ -284,9 +283,9 @@ fun RecentAppItem(
             else -> { // Time (default)
                 val totalMinutes = recentApp.totalUsageTime / (1000 * 60)
                 when {
-                    totalMinutes < 60 -> "${totalMinutes}m"
-                    totalMinutes < 1440 -> "${totalMinutes / 60}h"
-                    else -> "${totalMinutes / 1440}d"
+                    totalMinutes < 60 -> stringResource(R.string.duration_minutes_short, totalMinutes)
+                    totalMinutes < 1440 -> stringResource(R.string.duration_hours_short, totalMinutes / 60)
+                    else -> stringResource(R.string.duration_days_short, totalMinutes / 1440)
                 }
             }
         }
@@ -295,14 +294,11 @@ fun RecentAppItem(
         val now = System.currentTimeMillis()
         val diff = now - recentApp.lastUsedTime
         when {
-            diff < 60_000 -> "Just now"
-            diff < 3_600_000 -> "${diff / 60_000}m ago"
-            diff < 86_400_000 -> "${diff / 3_600_000}h ago"
-            diff < 604_800_000 -> "${diff / 86_400_000}d ago"
-            else -> {
-                val sdf = SimpleDateFormat("MMM d", Locale.getDefault())
-                sdf.format(Date(recentApp.lastUsedTime))
-            }
+            diff < 60_000 -> stringResource(R.string.last_used_just_now)
+            diff < 3_600_000 -> stringResource(R.string.last_used_minutes_ago, diff / 60_000)
+            diff < 86_400_000 -> stringResource(R.string.last_used_hours_ago, diff / 3_600_000)
+            diff < 604_800_000 -> stringResource(R.string.last_used_days_ago, diff / 86_400_000)
+            else -> LocalContext.current.formatDisplayDate(R.string.date_pattern_short, Date(recentApp.lastUsedTime))
         }
     }
 

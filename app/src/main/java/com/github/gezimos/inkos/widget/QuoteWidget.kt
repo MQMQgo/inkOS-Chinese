@@ -28,12 +28,13 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import com.github.gezimos.inkos.data.Prefs
 
 class QuoteWidget : GlanceAppWidget() {
 
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         val prefs = context.getSharedPreferences("com.github.gezimos.inkos", 0)
-        val quoteText = prefs.getString("QUOTE_TEXT", "Stay inspired") ?: "Stay inspired"
+        val quoteText = Prefs(context).quoteText
         val quoteSize = prefs.getInt("QUOTE_TEXT_SIZE", 18)
         val alignment = prefs.getInt("HOME_QUOTE_ALIGNMENT", -1)
         val homeAlignment = prefs.getInt("HOME_ALIGNMENT", 0)

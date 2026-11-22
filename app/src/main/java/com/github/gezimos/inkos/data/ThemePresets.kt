@@ -3,9 +3,11 @@ package com.github.gezimos.inkos.data
 import android.graphics.Color as AndroidColor
 import com.github.gezimos.inkos.R
 import com.github.gezimos.inkos.helper.WallpaperUtility
+import androidx.annotation.StringRes
 
 data class ThemePreset(
     val name: String,
+    @StringRes val titleRes: Int,
     val lightTextColor: Int,
     val lightBackgroundColor: Int,
     val darkTextColor: Int,
@@ -37,7 +39,7 @@ data class ThemePreset(
     val appDrawerSize: Int = 30,
     val appDrawerAlignment: Int = 0,       // 0=Left
     val quoteSize: Int? = null,            // null = don't change
-    val quoteText: String? = null,         // null = don't change
+    @StringRes val quoteRes: Int? = null,         // null = don't change
     val homeAppsNum: Int = 15,
     val homePagesNum: Int = 3,
     val showNotificationCount: Boolean = true, // default matches prefs default
@@ -55,12 +57,13 @@ object ThemePresets {
         // 1. Classic
         ThemePreset(
             name = "Classic",
+            titleRes = R.string.theme_name_classic,
             lightTextColor = AndroidColor.BLACK,
             lightBackgroundColor = AndroidColor.WHITE,
             darkTextColor = AndroidColor.WHITE,
             darkBackgroundColor = AndroidColor.BLACK,
             font = Constants.FontFamily.PublicSans,
-            quoteText = "Keep it simple.",
+            quoteRes = R.string.theme_quote_classic,
             homeAlignment = 0,
             clockAlignment = 0,
             dateAlignment = 0,
@@ -73,6 +76,7 @@ object ThemePresets {
         // 2. Haze
         ThemePreset(
             name = "Haze",
+            titleRes = R.string.theme_name_haze,
             lightTextColor = AndroidColor.parseColor("#1A1A1A"),
             lightBackgroundColor = AndroidColor.parseColor("#F5F5F5"),
             darkTextColor = AndroidColor.parseColor("#E8E8E8"),
@@ -94,6 +98,7 @@ object ThemePresets {
         // 3. Lite
         ThemePreset(
             name = "Lite",
+            titleRes = R.string.theme_name_lite,
             lightTextColor = AndroidColor.BLACK,
             lightBackgroundColor = AndroidColor.WHITE,
             darkTextColor = AndroidColor.WHITE,
@@ -119,6 +124,7 @@ object ThemePresets {
         // 4. Terminal
         ThemePreset(
             name = "Terminal",
+            titleRes = R.string.theme_name_terminal,
             lightTextColor = AndroidColor.parseColor("#071404"),
             lightBackgroundColor = AndroidColor.WHITE,
             darkTextColor = AndroidColor.parseColor("#50cf3c"),
@@ -126,7 +132,7 @@ object ThemePresets {
             font = Constants.FontFamily.Iosevka,
             iconMode = 0,
             showIcons = true,
-            quoteText = "$ sudo reboot",
+            quoteRes = R.string.theme_quote_terminal,
             homeAlignment = 0,
             clockAlignment = 0,
             dateAlignment = 0,
@@ -140,6 +146,7 @@ object ThemePresets {
         // 5. Indigo
         ThemePreset(
             name = "Indigo",
+            titleRes = R.string.theme_name_indigo,
             lightTextColor = AndroidColor.parseColor("#041B4B"),
             lightBackgroundColor = AndroidColor.parseColor("#EDF2F7"),
             darkTextColor = AndroidColor.parseColor("#BDC3C7"),
@@ -162,12 +169,13 @@ object ThemePresets {
         // 7. Journal
         ThemePreset(
             name = "Journal",
+            titleRes = R.string.theme_name_journal,
             lightTextColor = AndroidColor.parseColor("#3C2F2F"),
             lightBackgroundColor = AndroidColor.parseColor("#F4ECD8"),
             darkTextColor = AndroidColor.parseColor("#F4ECD8"),
             darkBackgroundColor = AndroidColor.parseColor("#3C2F2F"),
             font = Constants.FontFamily.Vollkorn,
-            quoteText = "write your story",
+            quoteRes = R.string.theme_quote_journal,
             iconMode = 4,               // Tinted (inkOS)
             iconShape = 0,              // Pill
             showIcons = true,
@@ -187,12 +195,13 @@ object ThemePresets {
         // 8. Leaf
         ThemePreset(
             name = "Leaf",
+            titleRes = R.string.theme_name_leaf,
             lightTextColor = AndroidColor.parseColor("#2D4A2B"),
             lightBackgroundColor = AndroidColor.parseColor("#E8F5E8"),
             darkTextColor = AndroidColor.parseColor("#B8D4B6"),
             darkBackgroundColor = AndroidColor.parseColor("#1A2E1A"),
             font = Constants.FontFamily.ZalandoExp,
-            quoteText = "breathe deep",
+            quoteRes = R.string.theme_quote_leaf,
             iconMode = 4,
             iconShape = 1,
             showIcons = true,
@@ -210,6 +219,7 @@ object ThemePresets {
         // 9. Bold
         ThemePreset(
             name = "Bold",
+            titleRes = R.string.theme_name_bold,
             lightTextColor = AndroidColor.BLACK,
             lightBackgroundColor = AndroidColor.WHITE,
             darkTextColor = AndroidColor.parseColor("#F7A228"),
@@ -233,12 +243,13 @@ object ThemePresets {
         // 9. Coast
         ThemePreset(
             name = "Coast",
+            titleRes = R.string.theme_name_coast,
             lightTextColor = AndroidColor.parseColor("#1B4965"),
             lightBackgroundColor = AndroidColor.parseColor("#E0F2F7"),
             darkTextColor = AndroidColor.parseColor("#A8D5E2"),
             darkBackgroundColor = AndroidColor.parseColor("#1B4965"),
             font = Constants.FontFamily.Shortstack,
-            quoteText = "write that down.",
+            quoteRes = R.string.theme_quote_coast,
             iconMode = 2,
             iconShape = 0,          // Pill
             showIcons = true,
@@ -260,6 +271,7 @@ object ThemePresets {
         // 10. Graphite
         ThemePreset(
             name = "Graphite",
+            titleRes = R.string.theme_name_graphite,
             lightTextColor = AndroidColor.parseColor("#3D3D3D"),
             lightBackgroundColor = AndroidColor.parseColor("#F0F0F0"),
             darkTextColor = AndroidColor.parseColor("#C8C8C8"),
@@ -281,6 +293,7 @@ object ThemePresets {
         // 11. Plum
         ThemePreset(
             name = "Plum",
+            titleRes = R.string.theme_name_plum,
             lightTextColor = AndroidColor.parseColor("#3B0A45"),
             lightBackgroundColor = AndroidColor.parseColor("#F8EEF9"),
             darkTextColor = AndroidColor.parseColor("#DA70D6"),
@@ -302,6 +315,7 @@ object ThemePresets {
         // 12. Neon
         ThemePreset(
             name = "Neon",
+            titleRes = R.string.theme_name_neon,
             lightTextColor = AndroidColor.parseColor("#008B8B"),
             lightBackgroundColor = AndroidColor.parseColor("#E0FFFE"),
             darkTextColor = AndroidColor.parseColor("#00FFFF"),
@@ -328,6 +342,7 @@ object ThemePresets {
         // 13. Typer
         ThemePreset(
             name = "Typer",
+            titleRes = R.string.theme_name_typer,
             lightTextColor = AndroidColor.BLACK,
             lightBackgroundColor = AndroidColor.WHITE,
             darkTextColor = AndroidColor.WHITE,
@@ -335,7 +350,7 @@ object ThemePresets {
             font = Constants.FontFamily.Iosevka,
             iconMode = 4,
             showIcons = true,
-            quoteText = "I \u2764 NYC",
+            quoteRes = R.string.theme_quote_typer,
             homeAlignment = 0,
             clockAlignment = 0,
             dateAlignment = 0,
@@ -349,6 +364,7 @@ object ThemePresets {
         // 14. Woods
         ThemePreset(
             name = "Woods",
+            titleRes = R.string.theme_name_woods,
             lightTextColor = AndroidColor.parseColor("#1A1A1A"),
             lightBackgroundColor = AndroidColor.parseColor("#F5F5F5"),
             darkTextColor = AndroidColor.parseColor("#E8E8E8"),

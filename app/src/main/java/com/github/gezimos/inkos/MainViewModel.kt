@@ -11,6 +11,7 @@ import androidx.lifecycle.viewModelScope
 import com.github.gezimos.common.CrashHandler
 import com.github.gezimos.common.showShortToast
 import com.github.gezimos.inkos.data.AppListItem
+import com.github.gezimos.inkos.R
 import com.github.gezimos.inkos.data.Constants
 import com.github.gezimos.inkos.data.Constants.AppDrawerFlag
 import com.github.gezimos.inkos.data.HomeAppUiState
@@ -18,6 +19,7 @@ import com.github.gezimos.inkos.data.Prefs
 import com.github.gezimos.inkos.style.resolveThemeColors
 import com.github.gezimos.inkos.data.Constants.PrefKeys
 import com.github.gezimos.inkos.helper.AudioWidgetHelper
+import com.github.gezimos.inkos.helper.formatHomeDate
 import com.github.gezimos.inkos.helper.CalendarEventsHelper
 import com.github.gezimos.inkos.helper.IconUtility
 import com.github.gezimos.inkos.helper.isinkosDefault
@@ -61,7 +63,7 @@ data class HomeUiState(
     val statusFont: Constants.FontFamily = Constants.FontFamily.System,
     val lettersFont: Constants.FontFamily = Constants.FontFamily.System,
     val lettersTitleFont: Constants.FontFamily = Constants.FontFamily.System,
-    val lettersTitle: String = "Letters",
+    val lettersTitle: String = "",
     val lettersTitleSize: Int = 36,
     val notificationsTextSize: Int = 18,
     val textPaddingSize: Int = 0,
@@ -348,9 +350,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         val hours = totalMinutes / 60
         val minutes = totalMinutes % 60
         return when {
-            hours > 0 && minutes > 0 -> "${hours}h ${minutes}min"
+            hours > 0 && minutes > 0 -> appContext.getString(R.string.total_usage_hours_minutes, hours, minutes)
             hours > 0 -> "${hours}h"
-            else -> "${minutes}min"
+            else -> appContext.getString(R.string.total_usage_minutes, minutes)
         }
     }
 
@@ -1611,15 +1613,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                         status == android.os.BatteryManager.BATTERY_STATUS_FULL
                 val batteryLevel = (level * 100 / scale.toFloat()).toInt()
 
-                val datePattern = when (prefs.dateFormatStyle) {
-                    1 -> "EEE, MMM d"
-                    2 -> "MMM d"
-                    3 -> "d MMM"
-                    4 -> "EEEE"
-                    else -> "EEE, d MMM"
-                }
-                val dateFormat = java.text.SimpleDateFormat(datePattern, java.util.Locale.getDefault())
-                val dateText = dateFormat.format(java.util.Date())
+                val dateText = context.formatHomeDate(prefs.dateFormatStyle)
                 val batteryText = "$batteryLevel%"
                 
                 updateDateAndBatteryText(dateText, batteryText, isCharging)
@@ -1669,7 +1663,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             val component = ComponentName(packageName, activityInfo.first().name)
             launchAppWithPermissionCheck(component, packageName, userHandle, launcher)
         } else {
-            appContext.showShortToast("App not found")
+            appContext.showShortToast(appContext.getString(R.string.toast_app_not_found))
         }
     }
     
@@ -1698,7 +1692,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 newlyInstalled.remove(packageName)
                 prefs.newlyInstalledApps = newlyInstalled
             } catch (_: Exception) {
-                appContext.showShortToast("Unable to launch shortcut")
+                appContext.showShortToast(appContext.getString(R.string.toast_open_shortcut_failed))
             }
         } catch (e: Exception) {
             android.util.Log.e("MainViewModel", "Failed to launch shortcut: ${e.message}")
@@ -1708,10 +1702,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                     val component = ComponentName(packageName, activityInfo.first().name)
                     launchAppWithPermissionCheck(component, packageName, userHandle, launcher)
                 } else {
-                    appContext.showShortToast("Shortcut no longer available")
+                    appContext.showShortToast(appContext.getString(R.string.toast_shortcut_unavailable))
                 }
             } catch (_: Exception) {
-                appContext.showShortToast("Unable to launch shortcut")
+                appContext.showShortToast(appContext.getString(R.string.toast_open_shortcut_failed))
             }
         }
     }
@@ -1738,10 +1732,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 newlyInstalled.remove(component.packageName)
                 prefs.newlyInstalledApps = newlyInstalled
             } catch (_: Exception) {
-                appContext.showShortToast("Unable to launch app")
+                appContext.showShortToast(appContext.getString(R.string.toast_open_app_failed))
             }
         } catch (_: Exception) {
-            appContext.showShortToast("Unable to launch app")
+            appContext.showShortToast(appContext.getString(R.string.toast_open_app_failed))
         }
     }
 
@@ -2520,6 +2514,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun setLettersTitle(value: String) {
         prefs.lettersTitle = value
         _homeUiState.value = _homeUiState.value.copy(lettersTitle = value)
+    }
+
+    fun resetLettersTitle() {
+        prefs.resetLettersTitle()
+        _homeUiState.value = _homeUiState.value.copy(lettersTitle = prefs.lettersTitle)
     }
 
     fun setLettersTitleSize(size: Int) {

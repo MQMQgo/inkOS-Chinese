@@ -122,11 +122,11 @@ class HubFragment : Fragment() {
             if (event.action == KeyEvent.ACTION_DOWN) {
                 when (keyCode) {
                     KeyEvent.KEYCODE_DPAD_LEFT -> {
-                        context?.showShortToast("Dismiss: Del, C, #1 | Long press to dismiss all")
+                        context?.showShortToast(getString(R.string.notifications_dismiss_keys))
                         return@setOnKeyListener true
                     }
                     KeyEvent.KEYCODE_DPAD_RIGHT -> {
-                        context?.showShortToast("Open: Enter, Dpad Center, #3")
+                        context?.showShortToast(getString(R.string.notifications_open_keys))
                         return@setOnKeyListener true
                     }
                 }

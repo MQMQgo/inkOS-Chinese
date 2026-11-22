@@ -164,10 +164,10 @@ fun AppsDrawerLayout(
     if (state.flag == com.github.gezimos.inkos.data.Constants.AppDrawerFlag.EditFavorites) {
         OneTimeTooltip(
             key = "tooltip_edit_favorites_shown",
-            title = "Edit Favorites",
+            title = stringResource(R.string.edit_favorites),
             lines = listOf(
-                "Tap the numbers on top to change the number of apps/pages.",
-                "Drag the = icon to re-order apps."
+                stringResource(R.string.edit_favorites_count_tip),
+                stringResource(R.string.edit_favorites_drag_tip)
             )
         )
     }
@@ -175,9 +175,9 @@ fun AppsDrawerLayout(
     if (state.flag == com.github.gezimos.inkos.data.Constants.AppDrawerFlag.HiddenApps) {
         OneTimeTooltip(
             key = "tooltip_hidden_apps_shown",
-            title = "Hidden Apps",
+            title = stringResource(R.string.settings_hidden_apps_title),
             lines = listOf(
-                "Tap the title to multi-select apps to hide or unhide."
+                stringResource(R.string.edit_hidden_apps_select_tip)
             )
         )
     }
@@ -185,9 +185,9 @@ fun AppsDrawerLayout(
     if (state.flag == com.github.gezimos.inkos.data.Constants.AppDrawerFlag.EditHiddenApps) {
         OneTimeTooltip(
             key = "tooltip_edit_hidden_apps_shown",
-            title = "Hide Apps",
+            title = stringResource(R.string.hide_apps),
             lines = listOf(
-                "Tap apps to hide or unhide them, then tap Done."
+                stringResource(R.string.hide_apps_tip)
             )
         )
     }
@@ -210,7 +210,7 @@ fun AppsDrawerLayout(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "Calculating...",
+                        text = stringResource(R.string.app_calculating),
                         color = Theme.colors.text,
                         fontSize = uiState.appDrawerSize.sp.scaled(screenScale),
                         fontFamily = appFontFamily
@@ -222,7 +222,7 @@ fun AppsDrawerLayout(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = if (isSearchActive) "No apps found" else "No apps available",
+                        text = if (isSearchActive) stringResource(R.string.drawer_list_empty_hint) else stringResource(R.string.no_apps_available),
                         color = Theme.colors.text,
                         fontSize = uiState.appDrawerSize.sp.scaled(screenScale),
                         fontFamily = appFontFamily
@@ -237,10 +237,10 @@ fun AppsDrawerLayout(
                         if (state.flag == Constants.AppDrawerFlag.SetHomeApp || state.flag == Constants.AppDrawerFlag.HiddenApps || state.flag == Constants.AppDrawerFlag.EditFavorites || state.flag == Constants.AppDrawerFlag.EditHiddenApps) {
                             item(key = "title") {
                                 val titleText = when (state.flag) {
-                                    Constants.AppDrawerFlag.SetHomeApp -> "SELECT APP"
-                                    Constants.AppDrawerFlag.HiddenApps -> "HIDDEN APPS"
-                                    Constants.AppDrawerFlag.EditFavorites -> "$selectedFavoritesCount/$maxFavorites apps"
-                                    Constants.AppDrawerFlag.EditHiddenApps -> "$selectedFavoritesCount hidden"
+                                    Constants.AppDrawerFlag.SetHomeApp -> stringResource(R.string.select_app)
+                                    Constants.AppDrawerFlag.HiddenApps -> stringResource(R.string.settings_hidden_apps_title)
+                                    Constants.AppDrawerFlag.EditFavorites -> stringResource(R.string.favorites_capacity, selectedFavoritesCount, maxFavorites)
+                                    Constants.AppDrawerFlag.EditHiddenApps -> stringResource(R.string.hidden_count_fmt, selectedFavoritesCount)
                                     else -> ""
                                 }
 
@@ -310,7 +310,7 @@ fun AppsDrawerLayout(
                                         ) {
                                             Icon(
                                                 imageVector = Icons.Rounded.Edit,
-                                                contentDescription = "Edit hidden apps",
+                                                contentDescription = stringResource(R.string.edit_hidden_apps),
                                                 tint = editIconTint,
                                                 modifier = Modifier.size(with(density) { uiState.appDrawerSize.sp.scaled(screenScale).toDp() })
                                             )
@@ -319,7 +319,7 @@ fun AppsDrawerLayout(
                                     // Right-aligned: Done / edit icon on left
                                     if (hasDone && isRightAlignedTitle) {
                                         Text(
-                                            text = "Done",
+                                            text = stringResource(R.string.done),
                                             color = doneTextColor,
                                             fontSize = uiState.appDrawerSize.sp.scaled(screenScale),
                                             maxLines = 1,
@@ -353,7 +353,7 @@ fun AppsDrawerLayout(
                                     // Left/center: Done on right
                                     if (hasDone && !isRightAlignedTitle) {
                                         Text(
-                                            text = "Done",
+                                            text = stringResource(R.string.done),
                                             color = doneTextColor,
                                             fontSize = uiState.appDrawerSize.sp.scaled(screenScale),
                                             maxLines = 1,
@@ -787,13 +787,13 @@ fun AppItem(
         }
     }
     
-    val saveButtonText = remember(renameText.text, originalRenameText) {
+    val saveButtonText = stringResource(
         when {
-            renameText.text.isEmpty() -> "Reset"
-            renameText.text == originalRenameText -> "Close"
-            else -> "Save"
+            renameText.text.isEmpty() -> R.string.reset
+            renameText.text == originalRenameText -> R.string.btn_close
+            else -> R.string.btn_save
         }
-    }
+    )
     
     val ctx = LocalContext.current
     val density = LocalDensity.current
@@ -1048,7 +1048,7 @@ fun AppItem(
                         ) {
                             Icon(
                                 imageVector = Icons.Rounded.DragHandle,
-                                contentDescription = "Drag to reorder",
+                                contentDescription = stringResource(R.string.cd_drag_reorder),
                                 tint = if (isDpadGrabbed) bgColor else textColor,
                                 modifier = Modifier.size(handleSize * 0.8f)
                             )
@@ -1060,7 +1060,9 @@ fun AppItem(
                         val checkboxSize = uiState.appDrawerSize.dp.coerceAtLeast(20.dp)
                         Icon(
                             imageVector = if (isFavoriteChecked) Icons.Rounded.CheckBox else Icons.Rounded.CheckBoxOutlineBlank,
-                            contentDescription = if (isFavoriteChecked) "Selected" else "Not selected",
+                            contentDescription = stringResource(
+                                if (isFavoriteChecked) R.string.list_item_selected else R.string.list_item_not_selected
+                            ),
                             tint = textColor,
                             modifier = Modifier
                                 .size(checkboxSize)
@@ -1183,7 +1185,9 @@ fun AppItem(
                         val checkboxSize = uiState.appDrawerSize.dp.coerceAtLeast(20.dp)
                         Icon(
                             imageVector = if (isFavoriteChecked) Icons.Rounded.CheckBox else Icons.Rounded.CheckBoxOutlineBlank,
-                            contentDescription = if (isFavoriteChecked) "Selected" else "Not selected",
+                            contentDescription = stringResource(
+                                if (isFavoriteChecked) R.string.list_item_selected else R.string.list_item_not_selected
+                            ),
                             tint = textColor,
                             modifier = Modifier
                                 .size(checkboxSize)
@@ -1193,7 +1197,7 @@ fun AppItem(
                     if (isNewlyInstalled && !isSelectionMode) {
                         Icon(
                             imageVector = Icons.Rounded.AutoAwesome,
-                            contentDescription = "Newly installed",
+                            contentDescription = stringResource(R.string.cd_newly_installed),
                             tint = if (isSelected && isDpadMode) invertedHighlightTextColor else textColor,
                             modifier = Modifier.size((uiState.appDrawerSize * 0.8f).dp)
                         )
@@ -1239,7 +1243,7 @@ fun AppItem(
                         ) {
                             Icon(
                                 imageVector = Icons.Rounded.DragHandle,
-                                contentDescription = "Drag to reorder",
+                                contentDescription = stringResource(R.string.cd_drag_reorder),
                                 tint = if (isDpadGrabbed) bgColor else textColor,
                                 modifier = Modifier.size(handleSize * 0.8f)
                             )

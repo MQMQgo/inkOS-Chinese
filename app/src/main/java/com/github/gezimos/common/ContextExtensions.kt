@@ -28,6 +28,7 @@ import androidx.biometric.BiometricManager
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import com.github.gezimos.inkos.services.ActionService
+import com.github.gezimos.inkos.R
 import java.util.Calendar
 import java.util.Date
 
@@ -142,7 +143,7 @@ fun Context.openBatteryManager() {
         val intent = Intent(Intent.ACTION_POWER_USAGE_SUMMARY)
         this.startActivity(intent)
     } catch (_: ActivityNotFoundException) {
-        showLongToast("Battery manager settings are not available on this device.")
+        showLongToast(getString(R.string.toast_battery_manager_unavailable))
     }
     CrashHandler.logUserAction("Battery Manager Launched")
 }

@@ -6,6 +6,7 @@ import android.os.Parcel
 import android.util.Log
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
+import android.content.Context
 
 /**
  * Thanks to UndefinedProgrammer for providing the fix for E-ink helper.
@@ -26,12 +27,14 @@ class EinkHelper(private val packageName: String) : DefaultLifecycleObserver {
         const val MEINK_MODE_CLEAR = 3
         const val MEINK_MODE_READING = 4
 
-        fun modeName(mode: Int): String = when (mode) {
-            MEINK_MODE_CLEAR -> "Clear"
-            MEINK_MODE_CONTRAST -> "Contrast"
-            MEINK_MODE_READING -> "Reading"
-            else -> "Disabled"
-        }
+        fun modeName(context: Context, mode: Int): String = context.getString(
+            when (mode) {
+                MEINK_MODE_CLEAR -> R.string.eink_mode_clear
+                MEINK_MODE_CONTRAST -> R.string.eink_mode_contrast
+                MEINK_MODE_READING -> R.string.eink_mode_reading
+                else -> R.string.disabled
+            }
+        )
 
         fun nextMode(current: Int): Int = when (current) {
             MEINK_MODE_DISABLED -> MEINK_MODE_CLEAR

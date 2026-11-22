@@ -338,7 +338,7 @@ fun WallpaperUI(
                 ) {
                     Icon(
                         imageVector = Icons.Rounded.ChevronLeft,
-                        contentDescription = "Previous",
+                        contentDescription = stringResource(R.string.cd_previous),
                         tint = if (setFocused) bgColor else textColor,
                         modifier = Modifier
                             .size(24.dp.scaled(screenScale))
@@ -355,7 +355,7 @@ fun WallpaperUI(
                     )
                     Icon(
                         imageVector = Icons.Rounded.ChevronRight,
-                        contentDescription = "Next",
+                        contentDescription = stringResource(R.string.cd_next),
                         tint = if (setFocused) bgColor else textColor,
                         modifier = Modifier
                             .size(24.dp.scaled(screenScale))

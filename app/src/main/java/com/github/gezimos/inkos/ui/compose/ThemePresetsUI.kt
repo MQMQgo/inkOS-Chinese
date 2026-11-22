@@ -69,6 +69,7 @@ import com.github.gezimos.inkos.style.rememberScreenScale
 import com.github.gezimos.inkos.style.scaled
 import com.github.gezimos.inkos.ui.dialogs.ComposeBottomSheetHost
 import com.github.gezimos.inkos.ui.dialogs.ThemeConfigSheet
+import androidx.compose.ui.res.stringResource
 
 @Composable
 fun ThemePresetPicker(
@@ -171,7 +172,7 @@ fun ThemePresetPicker(
             viewModel.setAppSize((preset.appSize * screenScale).toInt())
             val defaultQuoteSize = (context.resources.getDimensionPixelSize(R.dimen.default_quote_size) / context.resources.displayMetrics.scaledDensity).toInt()
             viewModel.setQuoteSize(preset.quoteSize ?: defaultQuoteSize)
-            preset.quoteText?.let { viewModel.setQuoteText(it) }
+            preset.quoteRes?.let { viewModel.setQuoteText(context.getString(it)) }
             viewModel.setTextPaddingSize((preset.appGap * screenScale).toInt())
             viewModel.setAppDrawerSize((preset.appDrawerSize * screenScale).toInt())
             viewModel.setAppDrawerGap((preset.appDrawerGap * screenScale).toInt())
@@ -213,7 +214,7 @@ fun ThemePresetPicker(
                 prefs.inkosWallpaperResourceId = 0
             }
         }
-        android.widget.Toast.makeText(context, "Theme applied", android.widget.Toast.LENGTH_SHORT).show()
+        android.widget.Toast.makeText(context, context.getString(R.string.theme_applied), android.widget.Toast.LENGTH_SHORT).show()
         onConfirmSelect?.invoke()
     }
 
@@ -378,7 +379,7 @@ fun ThemePresetPicker(
                     if (safeIndex > 0) {
                         Icon(
                             imageVector = Icons.Rounded.ChevronLeft,
-                            contentDescription = "Previous theme",
+                            contentDescription = stringResource(R.string.theme_previous),
                             tint = Theme.colors.text,
                             modifier = Modifier.size(24.dp.scaled(screenScale))
                         )
@@ -463,7 +464,7 @@ fun ThemePresetPicker(
                     if (safeIndex < presets.lastIndex) {
                         Icon(
                             imageVector = Icons.Rounded.ChevronRight,
-                            contentDescription = "Next theme",
+                            contentDescription = stringResource(R.string.theme_next),
                             tint = Theme.colors.text,
                             modifier = Modifier.size(24.dp.scaled(screenScale))
                         )
@@ -499,7 +500,7 @@ fun ThemePresetPicker(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "CONFIG",
+                        text = stringResource(R.string.theme_config_button),
                         style = SettingsTheme.typography.title,
                         fontSize = titleFontSize,
                         fontWeight = FontWeight.Bold,
@@ -549,7 +550,7 @@ fun ThemePresetPicker(
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = "APPLY",
+                            text = stringResource(R.string.wallpaper_set),
                             style = SettingsTheme.typography.title,
                             fontSize = titleFontSize,
                             fontWeight = FontWeight.Bold,
@@ -593,7 +594,7 @@ private fun ThemePresetCard(
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         if (showTitle) {
             Text(
-                text = preset.name,
+                text = stringResource(preset.titleRes),
                 style = SettingsTheme.typography.title,
                 fontSize = titleFontSize,
                 color = Theme.colors.text,
@@ -625,8 +626,9 @@ private fun ThemePresetCard(
 
 /** Returns the display name of the currently applied theme (preset name or "Custom"). */
 fun getChosenThemeDisplayName(context: android.content.Context): String {
-    val prefs = Prefs(context)
-    return prefs.appliedThemeName ?: context.getString(R.string.custom_theme)
+    val name = Prefs(context).appliedThemeName ?: return context.getString(R.string.custom_theme)
+    val preset = ThemePresets.PRESETS.firstOrNull { it.name == name }
+    return preset?.let { context.getString(it.titleRes) } ?: name
 }
 @Composable
 fun ThemePresetsPage(
@@ -728,7 +730,8 @@ fun ThemePresetsPage(
                     )
                 }
         ) {
-            val currentPresetName = ThemePresets.PRESETS.getOrNull(currentIndexState.intValue)?.name?.uppercase() ?: ""
+            val currentPresetName = ThemePresets.PRESETS.getOrNull(currentIndexState.intValue)
+                ?.let { stringResource(it.titleRes).uppercase() }.orEmpty()
             SettingsComposable.PageHeader(
                 iconRes = R.drawable.ic_back,
                 title = currentPresetName,
@@ -746,7 +749,7 @@ fun ThemePresetsPage(
                         // Mono toggle
                         val monoActive = einkMode.value
                         Text(
-                            text = "Mono",
+                            text = stringResource(R.string.theme_mono),
                             style = SettingsTheme.typography.title,
                             fontSize = titleFontSize,
                             color = if (monoActive || monoHighlighted) prefBackgroundColor else prefTextColor,
@@ -790,7 +793,7 @@ fun ThemePresetsPage(
                         ) {
                             Icon(
                                 imageVector = modeIcon,
-                                contentDescription = currentThemeMode.name,
+                                contentDescription = currentThemeMode.string(),
                                 tint = if (modeHighlighted) prefBackgroundColor else prefTextColor,
                                 modifier = Modifier.size(20.dp.scaled(screenScale))
                             )

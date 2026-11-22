@@ -24,6 +24,7 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.github.gezimos.common.CrashHandler
 import com.github.gezimos.inkos.data.Constants
+import com.github.gezimos.inkos.R
 import com.github.gezimos.inkos.data.Migration
 import com.github.gezimos.inkos.data.Prefs
 import com.github.gezimos.inkos.databinding.ActivityMainBinding
@@ -113,8 +114,8 @@ class MainActivity : AppCompatActivity() {
                                 prefs.loadThemeFromJson(string)
                                 android.widget.Toast.makeText(this, getString(R.string.theme_imported), android.widget.Toast.LENGTH_SHORT).show()
                             } catch (e: Exception) {
-                                Log.e("ThemeImport", "Import failed", e)
-                                ComposeDialogManager(this, this).showErrorDialog(this, "Import failed", e.message ?: "Unknown error")
+                                Log.e("ThemeImport", getString(R.string.error_import_failed), e)
+                                ComposeDialogManager(this, this).showErrorDialog(this, getString(R.string.error_import_failed), e.message ?: getString(R.string.error_unknown))
                                 return@registerForActivityResult
                             }
                         } else {
@@ -139,8 +140,8 @@ class MainActivity : AppCompatActivity() {
                         }
                         android.widget.Toast.makeText(this, getString(R.string.theme_exported), android.widget.Toast.LENGTH_SHORT).show()
                     } catch (e: Exception) {
-                        Log.e("ThemeExport", "Export failed", e)
-                        ComposeDialogManager(this, this).showErrorDialog(this, "Export failed", e.message ?: "Unknown error")
+                        Log.e("ThemeExport", getString(R.string.error_export_failed), e)
+                        ComposeDialogManager(this, this).showErrorDialog(this, getString(R.string.error_export_failed), e.message ?: getString(R.string.error_unknown))
                     }
                 }
             }
@@ -154,13 +155,13 @@ class MainActivity : AppCompatActivity() {
                         val prefs = Prefs(applicationContext)
                         val json = applicationContext.contentResolver.openInputStream(uri)?.use { input ->
                             BufferedReader(InputStreamReader(input)).use { it.readText() }
-                        } ?: throw IllegalArgumentException("Cannot read file")
+                        } ?: throw IllegalArgumentException(getString(R.string.error_read_file))
                         prefs.loadThemeFromJson(json)
                         android.widget.Toast.makeText(this, getString(R.string.theme_imported), android.widget.Toast.LENGTH_SHORT).show()
                         startActivity(Intent.makeRestartActivityTask(this.intent?.component))
                     } catch (e: Exception) {
-                        Log.e("ThemeImport", "Import failed", e)
-                        ComposeDialogManager(this, this).showErrorDialog(this, "Import failed", e.message ?: "Unknown error")
+                        Log.e("ThemeImport", getString(R.string.error_import_failed), e)
+                        ComposeDialogManager(this, this).showErrorDialog(this, getString(R.string.error_import_failed), e.message ?: getString(R.string.error_unknown))
                     }
                 }
             }
