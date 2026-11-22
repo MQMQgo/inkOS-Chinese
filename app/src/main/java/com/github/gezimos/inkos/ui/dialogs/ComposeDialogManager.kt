@@ -7,6 +7,7 @@ import com.github.gezimos.inkos.MainViewModel
 import com.github.gezimos.inkos.R
 import com.github.gezimos.inkos.data.AppListItem
 import com.github.gezimos.inkos.data.Constants
+import com.github.gezimos.inkos.data.EnumOption
 import com.github.gezimos.inkos.data.Constants.Action
 import com.github.gezimos.inkos.data.Constants.AppDrawerFlag
 import com.github.gezimos.inkos.data.Prefs
@@ -140,7 +141,7 @@ class ComposeDialogManager(val context: Context, val activity: Activity) {
                 title = context.getString(titleResId),
                 options = options.toList(),
                 selectedIndex = selectedIndex,
-                optionLabel = { it.toString() },
+                optionLabel = { option -> if (option is EnumOption) option.string() else option.toString() },
                 fonts = fonts,
                 fontSize = fontSize,
                 nonSelectable = nonSelectable ?: { false },

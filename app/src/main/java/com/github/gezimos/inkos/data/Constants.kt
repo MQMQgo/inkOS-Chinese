@@ -7,6 +7,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.core.content.res.ResourcesCompat
 import com.github.gezimos.inkos.R
 import com.github.gezimos.inkos.helper.getTrueSystemFont
+import androidx.annotation.StringRes
 
 interface EnumOption {
     @Composable
@@ -214,12 +215,16 @@ object Constants {
         PageDots("page_dots")
     }
 
-    enum class NotificationIndicator(val symbol: String, val label: String, val isSuperscript: Boolean) {
-        Asterisk("*", "Asterisk", true),
-        FilledCircle("●", "Filled Circle", false),
-        OutlineCircle("○", "Outline Circle", false),
-        FilledDiamond("◆", "Filled Diamond", false),
-        FilledSquare("■", "Filled Square", false);
+    enum class NotificationIndicator(
+        val symbol: String,
+        @StringRes val labelRes: Int,
+        val isSuperscript: Boolean
+    ) {
+        Asterisk("*", R.string.badge_asterisk, true),
+        FilledCircle("●", R.string.badge_filled_circle, false),
+        OutlineCircle("○", R.string.badge_outline_circle, false),
+        FilledDiamond("◆", R.string.badge_filled_diamond, false),
+        FilledSquare("■", R.string.badge_filled_square, false);
 
         companion object {
             fun fromOrdinal(value: Int): NotificationIndicator =
@@ -227,8 +232,21 @@ object Constants {
         }
     }
 
-    enum class ShortcutIcon {
-        Disabled, Search, Phone, Messages, Camera, Notes, Bubble, Music, Light, Star, Clock
+    enum class ShortcutIcon(@StringRes val labelRes: Int) : EnumOption {
+        Disabled(R.string.disabled),
+        Search(R.string.search),
+        Phone(R.string.preview_phone),
+        Messages(R.string.preview_messages),
+        Camera(R.string.preview_camera),
+        Notes(R.string.preview_notes),
+        Bubble(R.string.shortcut_icon_bubble),
+        Music(R.string.guide_music),
+        Light(R.string.shortcut_icon_light),
+        Star(R.string.shortcut_icon_star),
+        Clock(R.string.clock_section);
+
+        @Composable
+        override fun string(): String = stringResource(labelRes)
     }
 
     enum class BackupType {

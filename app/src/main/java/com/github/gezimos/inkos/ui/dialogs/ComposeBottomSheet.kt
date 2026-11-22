@@ -613,7 +613,7 @@ fun <T> SingleChoiceSheet(
     title: String,
     options: List<T>,
     selectedIndex: Int?,
-    optionLabel: (T) -> String = { it.toString() },
+    optionLabel: @Composable (T) -> String = { it.toString() },
     fonts: List<AndroidTypeface>? = null,
     fontSize: Float = 18f,
     nonSelectable: (T) -> Boolean = { false },
@@ -2672,14 +2672,14 @@ fun ShortcutIconPickerSheet(
                     } else {
                         Icon(
                             imageVector = icon.toImageVector(),
-                            contentDescription = icon.name,
+                            contentDescription = icon.string(),
                             tint = fg,
                             modifier = Modifier.size(28.dp.scaled(screenScale))
                         )
                     }
                     Spacer(Modifier.height(6.dp.scaled(screenScale)))
                     Text(
-                        text = icon.name,
+                        text = icon.string(),
                         style = SettingsTheme.typography.item,
                         color = fg,
                         fontSize = (11 * screenScale).sp,
@@ -3023,7 +3023,7 @@ fun BadgeIndicatorPickerSheet(
                     }
                     Spacer(Modifier.height(6.dp.scaled(screenScale)))
                     Text(
-                        text = indicator.label,
+                        text = stringResource(indicator.labelRes),
                         style = SettingsTheme.typography.item,
                         color = fg,
                         fontSize = (11 * screenScale).sp,

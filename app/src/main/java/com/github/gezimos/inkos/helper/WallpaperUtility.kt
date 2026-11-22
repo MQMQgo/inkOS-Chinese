@@ -13,6 +13,7 @@ import androidx.exifinterface.media.ExifInterface
 import com.github.gezimos.inkos.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import androidx.annotation.StringRes
 
 class WallpaperUtility(private val context: Context) {
 
@@ -22,32 +23,32 @@ class WallpaperUtility(private val context: Context) {
 
     companion object {
         val PRESET_WALLPAPERS = listOf(
-            PresetWallpaper("White", -1),
-            PresetWallpaper("Black", -2),
-            PresetWallpaper("Japan", R.drawable.japan_left),
-            PresetWallpaper("Japan 2", R.drawable.japan2),
-            PresetWallpaper("NYC", R.drawable.nyc_left),
-            PresetWallpaper("SF", R.drawable.sf_left),
-            PresetWallpaper("Trees", R.drawable.trees_left),
-            PresetWallpaper("Bamboo", R.drawable.bamboo),
-            PresetWallpaper("Blossom", R.drawable.blossom3),
-            PresetWallpaper("Building", R.drawable.building),
-            PresetWallpaper("Forrest", R.drawable.forrest),
-            PresetWallpaper("Leaf", R.drawable.leaf),
-            PresetWallpaper("Liberty", R.drawable.liberty),
-            PresetWallpaper("Urban", R.drawable.urban),
-            PresetWallpaper("Halfdots", R.drawable.halfdots),
-            PresetWallpaper("Halfdots Two", R.drawable.halfdots_two),
-            PresetWallpaper("Dots", DOTS_LEFT, intArrayOf(DOTS_LEFT, DOTS_CENTER, DOTS_RIGHT)),
-            PresetWallpaper("Lines", LINES_LEFT, intArrayOf(LINES_LEFT, LINES_CENTER, LINES_RIGHT)),
-            PresetWallpaper("Grid", GRID_LEFT, intArrayOf(GRID_LEFT, GRID_CENTER, GRID_RIGHT)),
-            PresetWallpaper("Diagonal", DIAG_LEFT, intArrayOf(DIAG_LEFT, DIAG_CENTER, DIAG_RIGHT)),
-            PresetWallpaper("Circles", CIRCLES_BL, intArrayOf(CIRCLES_BL, CIRCLES_BR)),
-            PresetWallpaper("Crosshatch", CROSS_LEFT, intArrayOf(CROSS_LEFT, CROSS_CENTER, CROSS_RIGHT)),
-            PresetWallpaper("Waves", WAVE_LEFT, intArrayOf(WAVE_LEFT, WAVE_CENTER, WAVE_RIGHT)),
-            PresetWallpaper("Plus", PLUS_LEFT, intArrayOf(PLUS_LEFT, PLUS_CENTER, PLUS_RIGHT)),
-            PresetWallpaper("Matrix", SCATTER_LEFT, intArrayOf(SCATTER_LEFT, SCATTER_CENTER, SCATTER_RIGHT)),
-            PresetWallpaper("Binary", DASH_LEFT, intArrayOf(DASH_LEFT, DASH_CENTER, DASH_RIGHT)),
+            PresetWallpaper(R.string.wallpaper_preset_white, -1),
+            PresetWallpaper(R.string.wallpaper_preset_black, -2),
+            PresetWallpaper(R.string.wallpaper_preset_japan, R.drawable.japan_left),
+            PresetWallpaper(R.string.wallpaper_preset_japan_2, R.drawable.japan2),
+            PresetWallpaper(R.string.wallpaper_preset_nyc, R.drawable.nyc_left),
+            PresetWallpaper(R.string.wallpaper_preset_sf, R.drawable.sf_left),
+            PresetWallpaper(R.string.wallpaper_preset_trees, R.drawable.trees_left),
+            PresetWallpaper(R.string.wallpaper_preset_bamboo, R.drawable.bamboo),
+            PresetWallpaper(R.string.wallpaper_preset_blossom, R.drawable.blossom3),
+            PresetWallpaper(R.string.wallpaper_preset_building, R.drawable.building),
+            PresetWallpaper(R.string.wallpaper_preset_forest, R.drawable.forrest),
+            PresetWallpaper(R.string.wallpaper_preset_leaf, R.drawable.leaf),
+            PresetWallpaper(R.string.wallpaper_preset_liberty, R.drawable.liberty),
+            PresetWallpaper(R.string.wallpaper_preset_urban, R.drawable.urban),
+            PresetWallpaper(R.string.wallpaper_preset_halfdots, R.drawable.halfdots),
+            PresetWallpaper(R.string.wallpaper_preset_halfdots_two, R.drawable.halfdots_two),
+            PresetWallpaper(R.string.wallpaper_preset_dots, DOTS_LEFT, intArrayOf(DOTS_LEFT, DOTS_CENTER, DOTS_RIGHT)),
+            PresetWallpaper(R.string.wallpaper_preset_lines, LINES_LEFT, intArrayOf(LINES_LEFT, LINES_CENTER, LINES_RIGHT)),
+            PresetWallpaper(R.string.wallpaper_preset_grid, GRID_LEFT, intArrayOf(GRID_LEFT, GRID_CENTER, GRID_RIGHT)),
+            PresetWallpaper(R.string.wallpaper_preset_diagonal, DIAG_LEFT, intArrayOf(DIAG_LEFT, DIAG_CENTER, DIAG_RIGHT)),
+            PresetWallpaper(R.string.wallpaper_preset_circles, CIRCLES_BL, intArrayOf(CIRCLES_BL, CIRCLES_BR)),
+            PresetWallpaper(R.string.wallpaper_preset_crosshatch, CROSS_LEFT, intArrayOf(CROSS_LEFT, CROSS_CENTER, CROSS_RIGHT)),
+            PresetWallpaper(R.string.wallpaper_preset_waves, WAVE_LEFT, intArrayOf(WAVE_LEFT, WAVE_CENTER, WAVE_RIGHT)),
+            PresetWallpaper(R.string.wallpaper_preset_plus, PLUS_LEFT, intArrayOf(PLUS_LEFT, PLUS_CENTER, PLUS_RIGHT)),
+            PresetWallpaper(R.string.wallpaper_preset_matrix, SCATTER_LEFT, intArrayOf(SCATTER_LEFT, SCATTER_CENTER, SCATTER_RIGHT)),
+            PresetWallpaper(R.string.wallpaper_preset_binary, DASH_LEFT, intArrayOf(DASH_LEFT, DASH_CENTER, DASH_RIGHT)),
         )
 
         const val DOTS_LEFT = -3
@@ -83,7 +84,7 @@ class WallpaperUtility(private val context: Context) {
     }
 
     data class PresetWallpaper(
-        val name: String,
+        @StringRes val titleRes: Int,
         val resourceId: Int,
         val variants: IntArray? = null
     ) {

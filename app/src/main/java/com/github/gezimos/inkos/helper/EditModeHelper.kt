@@ -135,8 +135,10 @@ object EditModeHelper {
             val path = if (contextKey == "notifications") {
                 prefs.getCustomFontPath("notifications") ?: prefs.getCustomFontPath("universal")
             } else { prefs.getCustomFontPathForContext(contextKey) }
-            path?.let { java.io.File(it).name } ?: font.name
-        } else { font.name }
+            path?.let { java.io.File(it).name } ?: font.getString(prefs.context)
+        } else {
+            font.getString(prefs.context)
+        }
         return if (fontName.length > 12) "${fontName.take(12)}..." else fontName
     }
 
@@ -725,7 +727,7 @@ object EditModeHelper {
                             Constants.BottomWidgetType.Shortcuts.value -> {
                                 val shortcutActions = buildGestureActions(context, uiState.notificationsEnabled, includeOpenApp = true)
 
-                                SettingRow(label = stringResource(R.string.shortcut_left_icon), value = uiState.shortcutLeftIcon.name) {
+                                SettingRow(label = stringResource(R.string.shortcut_left_icon), value = uiState.shortcutLeftIcon.string()) {
                                     currentSheet?.dismiss()
                                     dialogManager.showShortcutIconPicker(
                                         currentIcon = uiState.shortcutLeftIcon,
@@ -761,7 +763,7 @@ object EditModeHelper {
                                     )
                                 }
 
-                                SettingRow(label = stringResource(R.string.shortcut_right_icon), value = uiState.shortcutRightIcon.name) {
+                                SettingRow(label = stringResource(R.string.shortcut_right_icon), value = uiState.shortcutRightIcon.string()) {
                                     currentSheet?.dismiss()
                                     dialogManager.showShortcutIconPicker(
                                         currentIcon = uiState.shortcutRightIcon,

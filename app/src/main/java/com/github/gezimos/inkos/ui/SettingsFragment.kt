@@ -1111,15 +1111,13 @@ class SettingsFragment : Fragment() {
                         if (!contains(Action.OpenAppDrawer)) add(Action.OpenAppDrawer)
                     }
                 }
-                val iconLabels = Constants.ShortcutIcon.entries.map { it.name }
-                SettingsSelect(title = stringResource(R.string.shortcut_left_icon), option = prefs.shortcutLeftIcon.name, fontSize = titleFontSize, onClick = {
+                val iconChoices = Constants.ShortcutIcon.entries.toTypedArray()
+                SettingsSelect(title = stringResource(R.string.shortcut_left_icon), option = prefs.shortcutLeftIcon.string(), fontSize = titleFontSize, onClick = {
                     dialogBuilder.showSingleChoiceDialog(
-                        context = requireContext(), options = iconLabels.toTypedArray(),
+                        context = requireContext(), options = iconChoices,
                         titleResId = R.string.bottom_widget,
                         selectedIndex = Constants.ShortcutIcon.entries.indexOf(prefs.shortcutLeftIcon),
-                        onItemSelected = { selected ->
-                            viewModel.setShortcutLeftIcon(Constants.ShortcutIcon.valueOf(selected))
-                        }
+                        onItemSelected = viewModel::setShortcutLeftIcon
                     )
                 })
                 val appLabelLeft = prefs.appShortcutLeft.activityLabel
@@ -1136,14 +1134,12 @@ class SettingsFragment : Fragment() {
                         else viewModel.setShortcutLeftAction(action)
                     }
                 })
-                SettingsSelect(title = stringResource(R.string.shortcut_right_icon), option = prefs.shortcutRightIcon.name, fontSize = titleFontSize, onClick = {
+                SettingsSelect(title = stringResource(R.string.shortcut_right_icon), option = prefs.shortcutRightIcon.string(), fontSize = titleFontSize, onClick = {
                     dialogBuilder.showSingleChoiceDialog(
-                        context = requireContext(), options = iconLabels.toTypedArray(),
+                        context = requireContext(), options = iconChoices,
                         titleResId = R.string.bottom_widget,
                         selectedIndex = Constants.ShortcutIcon.entries.indexOf(prefs.shortcutRightIcon),
-                        onItemSelected = { selected ->
-                            viewModel.setShortcutRightIcon(Constants.ShortcutIcon.valueOf(selected))
-                        }
+                        onItemSelected = viewModel::setShortcutRightIcon
                     )
                 })
                 val appLabelRight = prefs.appShortcutRight.activityLabel

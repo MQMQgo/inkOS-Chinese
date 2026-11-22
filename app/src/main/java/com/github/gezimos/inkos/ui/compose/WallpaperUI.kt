@@ -159,7 +159,7 @@ fun WallpaperUI(
     fun triggerSet(preset: WallpaperUtility.PresetWallpaper) {
         if (preset.isGenerated) {
             showSheet {
-                com.github.gezimos.inkos.ui.dialogs.SheetTitle(preset.name)
+                com.github.gezimos.inkos.ui.dialogs.SheetTitle(stringResource(preset.titleRes))
                 AlignmentPickerRow(
                     variants = preset.variants!!,
                     onSelect = { variantId ->
@@ -202,7 +202,7 @@ fun WallpaperUI(
             // Header
             SettingsComposable.PageHeader(
                 iconRes = R.drawable.ic_back,
-                title = selectedPreset.name.uppercase(),
+                title = stringResource(selectedPreset.titleRes).uppercase(),
                 onClick = onBackClick,
                 showStatusBar = showStatusBar,
                 titleFontSize = titleFontSize,
